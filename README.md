@@ -1,79 +1,79 @@
 # Skills Learning
 
-Colección de skills instalables para agentes de IA (OpenCode, Claude, etc.)
+Collection of installable skills for AI agents (OpenCode, Claude, etc.)
 
 ## Skills Included
 
 ### 1. Code Analysis
-- **Descripción:** Analiza código fuente para identificar bugs, vulnerabilidades de seguridad, code smells y oportunidades de optimización de performance.
-- **Instalar:** `npx skills add ASamiraJasbonM/Skills-learning --skill code-analysis`
+- **Description:** Analyzes source code to identify bugs, security vulnerabilities, code smells, and performance optimization opportunities.
+- **Install:** `npx skills add ASamiraJasbonM/Skills-learning --skill code-analysis`
 
 ### 2. Django-Shield 2026
-- **Descripción:** Auditor de ciberseguridad senior para Django 5.x/6.x. Identifica vulnerabilidades lógicas, de configuración, y analiza superficie de ataque (Taint Flow).
-- **Instalar:** `npx skills add ASamiraJasbonM/Skills-learning --skill django-shield`
+- **Description:** Senior cybersecurity auditor for Django 5.x/6.x. Identifies logic and configuration vulnerabilities, analyzes attack surface (Taint Flow).
+- **Install:** `npx skills add ASamiraJasbonM/Skills-learning --skill django-shield`
 
 ---
 
-## Cómo Instalar una Skill
+## How to Install a Skill
 
-### Opción 1: Con npx skills (recomendado)
+### Option 1: Using npx skills (recommended)
 
 ```bash
-# Instalar una skill específica
-npx skills add ASamiraJasbonM/Skills-learning --skill <nombre-de-skill>
+# Install a specific skill
+npx skills add ASamiraJasbonM/Skills-learning --skill <skill-name>
 
-# Ejemplo: code-analysis
+# Example: code-analysis
 npx skills add ASamiraJasbonM/Skills-learning --skill code-analysis
 
-# Ejemplo: django-shield
+# Example: django-shield
 npx skills add ASamiraJasbonM/Skills-learning --skill django-shield
 
-# Instalar todas las skills
+# Install all skills
 npx skills add ASamiraJasbonM/Skills-learning --skill '*'
 ```
 
-### Opción 2: Manual
+### Option 2: Manual
 
 ```bash
-# Clonar el repositorio
+# Clone the repository
 git clone https://github.com/ASamiraJasbonM/Skills-learning.git
 
-# Copiar la skill deseada a tu directorio de skills
+# Copy the desired skill to your skills directory
 cp -r Skills-learning/<skill-name> ~/.config/opencode/skills/
 ```
 
 ---
 
-## Estructura del Repositorio
+## Repository Structure
 
 ```
 Skills-learning/
 ├── code-analysis/
-│   └── SKILL.md          # Skill de análisis de código
+│   └── SKILL.md          # Code analysis skill
 ├── django-shield/
-│   └── SKILL.md         # Skill de auditoría de seguridad Django
+│   └── SKILL.md         # Django security audit skill
 └── README.md
 ```
 
 ---
 
-## Crear una Nueva Skill
+## Creating a New Skill
 
 ```bash
-# Inicializar una nueva skill
-npx skills init mi-nueva-skill
+# Initialize a new skill
+npx skills init my-new-skill
 
-# Editar el archivo SKILL.md generado
-# Subir a GitHub y usar:
-npx skills add TU-USUARIO/mi-nueva-skill
+# Edit the generated SKILL.md file
+# Push to GitHub and use:
+npx skills add YOUR_USERNAME/my-new-skill
 ```
 
 ---
 
-## Requisitos
+## Requirements
 
 - Node.js 18+
-- Agente de IA compatible (OpenCode, Claude Code, etc.)
+- Compatible AI agent (OpenCode, Claude Code, etc.)
 
 ---
 

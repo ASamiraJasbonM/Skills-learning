@@ -1,9 +1,6 @@
 ---
 name: meta-skill-architect
-version: 3.0.0
-platform: [Claude, Gemini, GPT, Opencode, Kilocode]
-domain: skill-development
-dependencies: ninguna
+description: Sistema de ingeniería de prompts para diseñar, auditar y mejorar skills SKILL.md para agentes IA. Diseña skills nuevas, audita existentes, mejora iterativamente, adapta a plataformas específicas.
 ---
 
 # Meta-Skill Architect

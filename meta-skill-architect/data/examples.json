@@ -1,6 +1,6 @@
 {
   "skill_name": "meta-skill-architect",
-  "version": "2.3.0",
+  "version": "3.0.0",
   "evals": [
     {
       "id": 1,
@@ -98,6 +98,6 @@
   "metadata": {
     "total_evals": 8,
     "categories": ["seguridad", "calidad", "modificacion", "ambiguedad"],
-    "version": "2.3.0"
+    "version": "3.0.0"
   }
 }

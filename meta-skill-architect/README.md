@@ -48,13 +48,21 @@ meta-skill-architect es un **arquitecto autónomo de skills** que genera, audita
 |---------|-------------|
 | `references/schemas.md` | 6 esquemas JSON para consistencia |
 | `references/writing-patterns.md` | 7 patrones de escritura robusta |
-| `references/examples.md` | 5 ejemplos canónicos |
+| `references/examples.md` | 7 ejemplos canónicos |
 
 ### Data
 
 | Archivo | Descripción |
 |---------|-------------|
 | `data/examples.json` | 8 evals con 28 expectations |
+| `data/validate_fixtures/` | 5 fixtures para testing del validador |
+
+### Assets
+
+| Archivo | Descripción |
+|---------|-------------|
+| `assets/template-full.md` | Plantilla completa (>4000 tokens) |
+| `assets/template-minimal.md` | Plantilla mínima (<4000 tokens) |
 
 ---
 
@@ -79,6 +87,57 @@ El modelo ejecutará el ciclo automáticamente.
 python meta-skill-architect/scripts/validate_structure.py skill/SKILL.md
 python meta-skill-architect/scripts/validate_structure.py skill/SKILL.md --json
 ```
+
+### Smoke test
+
+```bash
+python meta-skill-architect/scripts/smoke_test.sh
+```
+
+---
+
+## Cuándo recomendar estructura mínima vs completa
+
+### Estructura mínima — un solo SKILL.md
+
+Usar cuando:
+- La skill tiene ≤3 pasos en su flujo principal
+- No hay documentación de referencia externa (APIs, schemas)
+- El SKILL.md completo cabe en ≤5000 palabras
+- La plataforma de destino es Kilocode u Opencode (contexto limitado)
+
+Ejemplo:
+```
+my-skill/
+├── SKILL.md
+```
+
+### Estructura completa — carpetas separadas
+
+Usar cuando:
+- `references/`: documentación de API, schemas o guías >5000 palabras
+- `scripts/`: tareas determinísticas y repetibles (validación, formateo)
+- `assets/`: plantillas de output, templates JSON, imágenes
+- `data/`: conjuntos de evaluación, fixtures de prueba
+
+Ejemplo:
+```
+my-skill/
+├── SKILL.md
+├── references/
+│   └── api-docs.md
+├── scripts/
+│   └── validate.py
+├── assets/
+│   └── template.json
+└── data/
+    └── evals.json
+```
+
+### Regla de decisión rápida
+
+- ¿El SKILL.md necesita cargar contexto externo bajo demanda? → estructura completa
+- ¿Funciona autónomamente con un solo archivo? → estructura mínima
 
 ---
 
@@ -140,7 +199,7 @@ Detecta expectations débiles (triviales o no discriminantes).
 | 1.0.0 | 2025-05-09 | Initial release (clasificación seguridad) |
 | 2.3.0 | 2025-05-26 | Sugerencias originales implementadas |
 | 2.4.0 | 2025-05-26 | Mejoras v2.4.0 (scripts, auditoría) |
-| 3.0.0 | 2025-05-26 | Mejoras v3.0.0 (protocolos avanzados) |
+| 3.0.0 | 2026-04-26 | Mejoras v3.0.0 (protocolos avanzados, post-evaluación senior) |
 
 ---
 
@@ -163,17 +222,27 @@ meta-skill-architect/
 ├── SKILL.md                   # Instalable
 ├── system.md                 # v3.0.0
 ├── task.md                   # v3.0.0
+├── assets/
+│   ├── template-full.md       # Plantilla completa
+│   └── template-minimal.md  # Plantilla mínima
 ├── scripts/
 │   ├── validate.sh          
-│   ├── validate_structure.py # v2
+│   ├── validate_structure.py # v2 (10 checks)
 │   ├── test_runner.py        # v2
-│   └── mcp_server.py       
+│   ├── mcp_server.py       
+│   └── smoke_test.sh       # Smoke test
 ├── data/
-│   └── examples.json        # 8 evals
+│   ├── examples.json        # 8 evals
+│   └── validate_fixtures/  # 5 fixtures
+│       ├── valid-full.md
+│       ├── valid-minimal.md
+│       ├── broken-frontmatter.md
+│       ├── missing-rubrica.md
+│       └── short-errors.md
 ├── references/
 │   ├── schemas.md          # 6 schemas
 │   ├── writing-patterns.md  # 7 patrones
-│   └── examples.md         
+│   └── examples.md         # 7 ejemplos
 └── README.md
 ```
 

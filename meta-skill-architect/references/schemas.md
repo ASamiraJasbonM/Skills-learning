@@ -1,4 +1,4 @@
-# Schemas de prompt_v22
+# Schemas — meta-skill-architect
 
 Este archivo documenta los esquemas JSON que el sistema produce/consume.
 Referencia esto para mantener consistencia entre sesiones.
@@ -196,7 +196,7 @@ Formato del Reporte de Auditoría que produce el Paso 5 en modo auditoría:
   "reason": "Instrucciones mas autonomous y criterios de terminacion claros",
   "changes_to_port": [
     "Anadir criterio de terminacion a cada paso",
-    "Reemplazar 'analiza riesgos' por 'evalua los 4 vectores... cuando完"
+    "Reemplazar 'analiza riesgos' por 'evalua los 4 vectores de riesgo (inyeccion, sesgo, scope, herramienta). Cuando hayas documentado mitigacion para cada uno, avanza al Paso 4.'"
   ]
 }
 ```
@@ -229,6 +229,12 @@ Formato del Reporte de Auditoría que produce el Paso 5 en modo auditoría:
     "queries_improved": 8,
     "queries_degraded": 0,
     "queries_unchanged": 2,
+    "char_count": {
+      "original": 743,
+      "improved": 981,
+      "within_limit": true,
+      "limit": 1024
+    },
     "tradeoffs": [
       "Descripcion mas larga pero menos ambigua"
     ]

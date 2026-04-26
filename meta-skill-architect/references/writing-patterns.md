@@ -67,6 +67,10 @@ Cada error en la tabla debe tener una acción de recuperación, no solo un diagn
 |-------|--------|
 | Input inválido | Solicitar aclaración |
 
+> **Nota de implementación:** Esta tabla de 4 columnas es el estándar recomendado.
+> La plantilla mínima usa 2 columnas por restricción de tokens.
+> Cuando el contexto lo permita, usar siempre 4 columnas.
+
 ---
 
 ## Patrón 4: Rúbrica con comportamiento observable (no intencional)
@@ -103,28 +107,62 @@ Siempre ejecuta el ciclo de 5 pasos desde el Paso 1.
 
 ## Patrón 6: Instrucciones autónomas
 
-Una instrucción es autónoma si un agente puede ejecutarla sin preguntar nada más.
+Una instrucción autónoma especifica qué, sobre qué input, con qué criterio.
+Un agente puede ejecutarla sin preguntar nada más.
 
-### Autónoma
-"Extrae el texto, identifica las sesiones con headers H2, formatea según plantilla."
+### Robusto
+```markdown
+### Tarea
+1. Extrae el texto del `<input>`.
+2. Identifica todas las secciones con headers H2 (`##`).
+3. Para cada sección: aplica la plantilla del Paso 4.
+4. Criterio de terminación: cuando todas las secciones tengan su bloque
+   formateado, avanza al Paso 5.
+```
 
-### No autónoma
-"Procesa el documento apropiadamente."
+### Frágil
+```markdown
+### Tarea
+Procesa el documento apropiadamente y genera el output esperado.
+```
+
+**Por qué importa:** "Apropiadamente" no tiene referente. El agente puede
+completar la tarea de formas contradictorias en distintas ejecuciones.
+La versión robusta especifica el input (`<input>`), el criterio de búsqueda
+(headers H2) y la señal de avance (todas las secciones formateadas).
 
 ---
 
 ## Patrón 7: Criterio de terminación
 
-Cada paso debe tener un criterio claro de cuándo está completo.
+Un paso sin criterio de terminación se ejecuta hasta que el agente decide
+que "ya está" — que es arbitrario. El criterio debe ser verificable externamente.
 
-### Con criterio
-"Evalúa los 4 vectores de riesgo (inyección, sesgo, scope, herramienta).
-Cuando hayas documentado mitigación para cada uno, avanza al Paso 4."
+### Robusto
+```markdown
+## PASO 3 — Riesgos
+Evalúa los 4 vectores de riesgo:
+- Inyección de prompt
+- Sesgo de dominio
+- Scope creep
+- Fallo de herramienta
 
-### Sin criterio
-"Analiza los riesgos."
+Para cada vector: documenta riesgo (ALTO/MEDIO/BAJO/NO APLICA) y mitigación.
+**Criterio de terminación:** los 4 vectores tienen entrada. Si alguno está
+vacío, el paso no está completo. Solo entonces avanza al Paso 4.
+```
+
+### Frágil
+```markdown
+## PASO 3 — Riesgos
+Analiza los riesgos y documenta lo que encuentres.
+```
+
+**Por qué importa:** Sin criterio explícito, el agente puede declarar el paso
+completo con 1 de 4 vectores documentados. La versión robusta define el mínimo
+verificable (4 entradas) y bloquea el avance hasta cumplirlo.
 
 ---
 
-*Referencia:-task.md dice "consulta references/writing-patterns.md al escribir o revisar habilidades"*
+*Referencia: task.md dice "consulta references/writing-patterns.md al escribir o revisar instrucciones"*
 *No cargues automáticamente.*

@@ -1,8 +1,8 @@
-# Cumplimiento de prompt_v22 - Mejoras v2.4.0
+# Cumplimiento de meta-skill-architect - Mejoras v2.4.0
 
 ## Resumen: Mejoras v2.4.0 vs sugerencias_v23_scripts_y_modificacion.md
 
-| Mejora | Descripción | skill-creator tiene | prompt_v22 tiene | Estado |
+| Mejora | Descripción | skill-creator tiene | meta-skill-architect tiene | Estado |
 |-------|-------------|-------------------|------------------|--------|
 | A | validate_structure.py | quick_validate.py (6 campos) | validate_structure.py | ✅ Implementado |
 | B | Grader estructurado | grader.md (JSON) | Reporte de auditoría estructurado | ✅ Implementado |
@@ -24,7 +24,7 @@
 - name en kebab-case, máx 64 chars
 - description sin < >, máx 1024 chars
 
-**Qué se implementó en prompt_v22 (scripts/validate_structure.py):
+**Qué se implementó en meta-skill-architect (scripts/validate_structure.py):
 
 ```python
 # Validaciones implementadas:
@@ -63,7 +63,7 @@ def validate(skill_md_path):
 - Claims implícitos extraídos
 - Feedback sobre evals
 
-**Qué se implementó en prompt_v22 (task.md):**
+**Qué se implementó en meta-skill-architect (task.md):**
 
 ```markdown
 ## Reporte de Auditoría — [skill] v[X.Y.Z]
@@ -111,7 +111,7 @@ No lo omitas aunque la skill se vea bien.
 }
 ```
 
-**Qué se implementó en prompt_v22:**
+**Qué se implementó en meta-skill-architect:**
 
 ```markdown
 ## Historial de cambios
@@ -154,7 +154,7 @@ Al modificar una skill existente:
 }
 ```
 
-**Qué se implementó en prompt_v22 (data/examples.json):**
+**Qué se implementó en meta-skill-architect (data/examples.json):**
 
 8 evals con 28 expectations total:
 
@@ -182,7 +182,7 @@ Al modificar una skill existente:
 4. Identifica instrucciones que mejoraron
 5. Sugiere mejoras accionables
 
-**Qué se implementó en prompt_v22 (task.md):**
+**Qué se implementó en meta-skill-architect (task.md):**
 
 ```markdown
 ## Análisis post-modificación (≥2 iteraciones)
@@ -214,7 +214,7 @@ Formato:
 
 ## Comparación con skill-creator
 
-| Capacidad | skill-creator | prompt_v22 v2.4.0 | Notas |
+| Capacidad | skill-creator | meta-skill-architect v2.4.0 | Notas |
 |-----------|--------------|------------------|-------|
 | Validación estructura | quick_validate.py | validate_structure.py | Equivalente |
 | Grader JSON | grader.md | Reporte auditoría | Formato diferente pero equivalente |
@@ -224,7 +224,7 @@ Formato:
 
 ---
 
-##Qué NO se implementó (no aplica a prompt_v22)
+##Qué NO se implementó (no aplica a meta-skill-architect)
 
 | Capacidad | Razón |
 |----------|-------|
@@ -232,7 +232,7 @@ Formato:
 | eval-viewer/generate_review.py | Requiere display/webbrowser |
 | Spawning de subagentes | No disponible en claude.ai |
 
-prompt_v22 es agente de **diseño**, no de **ejecución**.
+meta-skill-architect es agente de **diseño**, no de **ejecución**.
 
 ---
 
@@ -244,7 +244,7 @@ prompt_v22 es agente de **diseño**, no de **ejecución**.
 |---|---|---|---|---|
 | ✅ | ✅ | ✅ | ✅ | ✅ |
 
-**prompt_v22 versión: 2.4.0**
+**meta-skill-architect versión: 2.4.0**
 
 ---
 

@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 """
-test_runner.py v2 - LLM-as-a-Judge evaluation suite for prompt_v22
+test_runner.py v2 - LLM-as-a-Judge evaluation suite for meta-skill-architect
 
 Evaluates skill outputs using another LLM instance as judge.
 Produces grading.json estructurado compatible con references/schemas.md.
@@ -271,7 +271,9 @@ def save_results(output: dict, output_path: Path) -> None:
 
 
 def main():
-    parser = argparse.ArgumentParser(description="LLM-as-a-Judge para prompt_v22")
+    parser = argparse.ArgumentParser(
+        description="LLM-as-a-Judge para meta-skill-architect"
+    )
     parser.add_argument("--data", type=Path, default=None, help="Ruta a evals JSON")
     parser.add_argument(
         "--output",

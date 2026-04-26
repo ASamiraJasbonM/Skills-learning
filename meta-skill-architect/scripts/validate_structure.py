@@ -47,7 +47,8 @@ ALLOWED_FIELDS_CORE = {
 }
 ALLOWED_FIELDS = ALLOWED_FIELDS_CORE
 
-SECTIONS_REQUIRED = {"## Manejo de Errores", "## Rúbrica", "## Rúbrica de Validación"}
+SECTIONS_REQUIRED_MANDATORY = {"## Manejo de Errores"}
+SECTIONS_RUBRICA_VARIANTS = {"## Rúbrica", "## Rúbrica de Validación"}
 SECTIONS_MINIMA = {"## Tarea", "## Manejo de Errores", "## Rúbrica"}
 
 
@@ -215,71 +216,18 @@ def check_error_table_has_actions(content: str) -> tuple[bool, str]:
     return True, ""
 
 
-def check_rubrica_has_both_columns(content: str) -> tuple[bool, str]:
-    """La rúbrica debe tener columna de éxito Y fallo, no solo éxito."""
-    rubrica_section = None
-    lines = content.split("\n")
-    in_rubrica = False
-    for line in lines:
-        if "## Rúbrica" in line or "## Rúbrica de Validación" in line:
-            in_rubrica = True
-            continue
-        if in_rubrica:
-            if line.strip().startswith("##") and "Rúbrica" not in line:
-                break
-            rubrica_section = line
-            break
-
-    if not rubrica_section:
-        return False, "Sección ## Rúbrica no encontrada"
-
-    rubrica_lower = rubrica_section.lower()
-    has_success = any(
-        w in rubrica_lower for w in ["éxito", "pasa", "correcto", "pass", "success"]
-    )
-    has_failure = any(
-        w in rubrica_lower for w in ["falla", "error", "incorrecto", "fail", "fallo"]
-    )
-    if not (has_success and has_failure):
-        return False, "Rúbrica debe indicar criterios de éxito Y fallo"
-    return True, None
-
-
-def check_error_table_has_actions(content: str) -> tuple[bool, str]:
-    """Cada fila de la tabla de errores debe tener columna Acción."""
-    errors_section = None
-    lines = content.split("\n")
-    in_errors = False
-    for line in lines:
-        if "## Manejo de Errores" in line:
-            in_errors = True
-            continue
-        if in_errors:
-            if line.strip().startswith("##") and "Manejo" not in line:
-                break
-            errors_section = line
-            break
-
-    if not errors_section:
-        return False, "Sección ## Manejo de Errores no encontrada"
-
-    rows = [
-        l for l in content.split("\n") if l.strip().startswith("|") and "---" not in l
-    ]
-    data_rows = rows[1:] if len(rows) > 1 else []
-    if len(data_rows) < 4:
-        return False, f"Tabla de errores tiene {len(data_rows)} filas, mínimo 4"
-    return True, None
-
-
 def validate_sections(content: str, is_minima: bool = False) -> tuple[bool, list[str]]:
     """Valida secciones requeridas."""
-    required = SECTIONS_MINIMA if is_minima else SECTIONS_REQUIRED
     missing = []
 
-    for section in required:
+    # Secciones obligatorias
+    for section in SECTIONS_REQUIRED_MANDATORY:
         if section not in content:
             missing.append(section)
+
+    # Acepta cualquier variante de rúbrica
+    if not any(v in content for v in SECTIONS_RUBRICA_VARIANTS):
+        missing.append("## Rúbrica (o ## Rúbrica de Validación)")
 
     return len(missing) == 0, missing
 
@@ -336,6 +284,21 @@ def validate_structure(skill_path: Path, fix: bool = False) -> tuple[bool, list[
     error_rows = count_error_rows(content)
     if error_rows < 4:
         errors.append(f"Tabla de errores insuficiente ({error_rows} filas, mínimo 4)")
+
+    # Check 7: No placeholders
+    valid, msg = check_no_placeholder(content)
+    if not valid:
+        errors.append(f"placeholder: {msg}")
+
+    # Check 8: Rúbrica con éxito Y fallo
+    valid, msg = check_rubrica_has_both_columns(content)
+    if not valid:
+        errors.append(f"rubrica: {msg}")
+
+    # Check 9: Tabla errores con columna acción
+    valid, msg = check_error_table_has_actions(content)
+    if not valid:
+        errors.append(f"error-table: {msg}")
 
     return len(errors) == 0, errors
 

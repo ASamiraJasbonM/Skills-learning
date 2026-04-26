@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 """
-mcp_server.py - Model Context Protocol Server for prompt_v22
+mcp_server.py - Model Context Protocol Server for meta-skill-architect
 
-Exposes the prompt_v22 skill to other agents following the MCP stdio protocol.
+Exposes the meta-skill-architect skill to other agents following the MCP stdio protocol.
 This is the standard pattern for agents running as subprocesses.
 
 Usage:
@@ -21,17 +21,17 @@ from pathlib import Path
 def get_skill_metadata() -> dict:
     """Return skill metadata."""
     return {
-        "name": "prompt_v22",
-        "version": "2.2.0",
+        "name": "meta-skill-architect",
+        "version": "3.0.0",
         "description": "Meta-Skill Architect for safe operational contract generation",
-        "author": "prompt_v22",
+        "author": "meta-skill-architect",
         "runtimes": ["Claude", "Gemini", "GPT", "Opencode", "Kilocode"],
     }
 
 
 def execute_skill(user_input: str, context: dict = None) -> dict:
     """
-    Execute the prompt_v22 skill with user input.
+    Execute the meta-skill-architect skill with user input.
 
     In a full implementation, this would:
     1. Load system.md and task.md
@@ -145,8 +145,8 @@ def main():
                 "id": 0,
                 "result": {
                     "event": "ready",
-                    "server": "prompt_v22_mcp",
-                    "version": "2.2.0",
+                    "server": "meta-skill-architect_mcp",
+                    "version": "3.0.0",
                 },
             }
         ),

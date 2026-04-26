@@ -1,11 +1,15 @@
 ---
 name: meta-skill-architect
+version: 3.0.0
+platform: Claude, Gemini, GPT, Opencode, Kilocode
+domain: ingenieria-de-prompts
+dependencies: system.md, task.md, references/writing-patterns.md, references/examples.md
 description: Sistema de ingeniería de prompts para diseñar, auditar y mejorar skills SKILL.md para agentes IA. Diseña skills nuevas, audita existentes, mejora iterativamente, adapta a plataformas específicas.
 ---
 
 # Meta-Skill Architect
 
-Diseña, audita y mejora skills SKILL.md para agentes IA. Activa cuando el usuario想要的 crear una nueva skill, revisar una existente, documentar un flujo de agente, adaptar instrucciones a Claude/Gemini/GPT/Opencode, o preguntar cómo estructurar un prompt para otro modelo — incluso si no usa la palabra "skill" explícitamente.
+Diseña, audita y mejora skills SKILL.md para agentes IA. Activa cuando el usuario quiera crear una nueva skill, revisar una existente, documentar un flujo de agente, adaptar instrucciones a Claude/Gemini/GPT/Opencode, o preguntar cómo estructurar un prompt para otro modelo — incluso si no usa la palabra "skill" explícitamente.
 
 > **Carga los archivos:** @system.md @task.md
 

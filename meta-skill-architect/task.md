@@ -71,6 +71,21 @@ Cada paso produce output visible antes de avanzar al siguiente:
 [1-2 oraciones: qué problema resuelve la skill y quién es el usuario final.
 Si existe skill conocida que ya cubrir, nómbrala.]
 
+**Recomendación de estructura:**
+
+Después de definir la intención, declara qué estructura recomiendas:
+
+| Condición | Estructura |
+|-----------|-----------|
+| Skill con 1-3 pasos, sin refs externas | Mínima (solo SKILL.md) |
+| Skill con docs de referencia extensas | Completa (+ references/) |
+| Skill con validación automatizable | Completa (+ scripts/) |
+| Skill con plantillas de output | Completa (+ assets/) |
+
+Ejemplo de output del Paso 1:
+"Intención: clasificador de emails por urgencia.
+Estructura recomendada: **mínima** — flujo de 3 pasos, sin dependencias externas."
+
 ## PASO 2 — Ambigüedad y Plataforma
 [Si claro: "Sin ambigüedad. Plataforma: X."
 Si	vago: ≤2 preguntas en opciones y DETENTE hasta recibir respuesta.]
@@ -140,62 +155,18 @@ Lee el artefacto como si fueras el agente que lo usará y responde: "¿Puedo eje
 
 Usar cuando >4000 tokens disponibles:
 
-```markdown
----
-name: [kebab-case]
-version: 1.0.0
-platform: [plataforma]
-domain: [dominio]
-dependencies: [dependencias o "ninguna"]
----
+> Carga desde `assets/template-full.md`
 
-# [Nombre]
-
-[Descripción: qué hace, cuándo activa, qué NO hace.]
-
-## Supuestos
-[Si hubo ambigüedad, documenta. Si no, "Ninguno."]
-
-## Riesgos Identificados
-- **[Tipo]:** [Descripción] → [Mitigación]
-
-## Instrucciones Operativas
-
-### Rol
-[2-4 oraciones: identidad y límites.]
-
-### Contexto
-[Entorno, herramientas, restricciones.]
-
-### Tarea
-[Pasos numerados con output esperado. Delimitadores donde aplique.]
-
-### Formato de Salida
-[Estructura exacta. Ejemplo con valores reales.]
-
-### Restricciones
-- MUST: [obligatorio]
-- SHOULD: [recomendado]
-- WON'T: [fuera de alcance]
-
-## Manejo de Errores
-
-| Escenario | Comportamiento |
-|-----------|-------------|
-| [1] | [acción concreta] |
-| [2] | [acción concreta] |
-| [3] | [acción concreta] |
-| [4] | [acción concreta] |
-
-## Rúbrica de Validación
-
-| Criterio | Éxito | Fallo |
-|----------|-------|-------|
-| Fidelidad al dominio | [observable] | [observable] |
-| Densidad semántica | [métrica] | [señal] |
-| Resistencia inyección | [comportamiento] | [fallo] |
-| Completitud | [contenido real] | [vacío/placeholder] |
-| Consistencia desc↔cuerpo | [todo en descripción está en cuerpo] | [ausente o extra en cuerpo] |
+```
+| Campo | Descripción |
+|------|-----------|
+| name, version, platform, domain, dependencies | Frontmatter |
+| Descripción | qué hace, cuándo activa, qué NO hace |
+| Supuestos | Si hubo ambigüedad, documenta |
+| Riesgos | Tipo → Mitigación |
+| Instrucciones | Rol, Contexto, Tarea, Formato, Restricciones |
+| Manejo de Errores | 4 columnas (Escenario, Diagnóstico, Acción, Señal) |
+| Rúbrica | Éxito y Fallo diferenciables |
 ```
 
 ---
@@ -204,39 +175,16 @@ dependencies: [dependencias o "ninguna"]
 
 Usar cuando <4000 tokens (típico en Opencode/Kilocode). Al final: `[Versión mínima — omitidas: X, Y. Regenerar si contexto lo permite.]`
 
-Secciones obligatorias:
+> Carga desde `assets/template-minimal.md`
 
-```markdown
----
-name: [kebab-case]
-version: 1.0.0
-platform: [plataforma]
-domain: [dominio]
-dependencies: [dependencias o "ninguna"]
----
-
-# [Nombre]
-
-[Descripción: qué hace / NO hace — máx 2 oraciones.]
-
-## Tarea
-[Pasos numerados. Sin prosa.]
-
-## Manejo de Errores
-
-| Escenario | Comportamiento |
-|----------|--------------|
-| [1] | [acción] |
-| [2] | [acción] |
-
-## Rúbrica
-
-| Criterio | Éxito | Fallo |
-|----------|------|-------|
-| [1] | [observable] | [observable] |
-| [2] | [observable] | [observable] |
-
-[Versión mínima — omitidas: Supuestos, Riesgos, Rol, Contexto, Restricciones.]
+```
+| Campo | Descripción |
+|------|-----------|
+| name, version, platform, domain, dependencies | Frontmatter |
+| Descripción | qué hace / NO hace (máx 2 oraciones) |
+| Tarea | Pasos numerados |
+| Manejo de Errores | 2 columnas (Escenario, Comportamiento) |
+| Rúbrica | Éxito y Fallo |
 ```
 
 ---

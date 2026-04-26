@@ -12,9 +12,9 @@ Colección de skills instalables para agentes IA (OpenCode, Claude, etc.)
 - **Descripción:** Auditor de ciberseguridad senior para Django 5.x/6.x. Identifica vulnerabilidades lógicas y de configuración, analiza superficie de ataque (Taint Flow).
 - **Instalar:** `npx skills add ASamiraJasbonM/Skills-learning --skill django-shield`
 
-### 3. Prompt v22 (Meta-Skill Architect)
-- **Descripción:** Sistema de ingeniería de prompts para diseñar, auditar y mejorar skills SKILL.md para agentes IA. Diseña skills nuevas, audita existentes,改进 iterativamente, adapta a plataformas específicas.
-- **Instalar:** `npx skills add ASamiraJasbonM/Skills-learning --skill prompt_v22`
+### 3. Meta-Skill Architect
+- **Descripción:** Sistema de ingeniería de prompts para diseñar, auditar y mejorar skills SKILL.md para agentes IA. Diseña skills nuevas, audita existentes, mejora iterativamente, adapta a plataformas específicas.
+- **Instalar:** `npx skills add ASamiraJasbonM/Skills-learning --skill meta-skill-architect`
 - **Versión:** 3.0.0
 - **Runtimes:** Claude, Gemini, GPT, Opencode, Kilocode
 
@@ -34,8 +34,8 @@ npx skills add ASamiraJasbonM/Skills-learning --skill code-analysis
 # Ejemplo: django-shield
 npx skills add ASamiraJasbonM/Skills-learning --skill django-shield
 
-# Ejemplo: prompt_v22
-npx skills add ASamiraJasbonM/Skills-learning --skill prompt_v22
+# Ejemplo: meta-skill-architect
+npx skills add ASamiraJasbonM/Skills-learning --skill meta-skill-architect
 
 # Instalar todos los skills
 npx skills add ASamiraJasbonM/Skills-learning --skill '*'
@@ -62,7 +62,8 @@ Skills-learning/
 │   └── SKILL.md                   # Code analysis skill
 ├── django-shield/
 │   └── SKILL.md                   # Django security audit skill
-├── prompt_v22/
+├── meta-skill-architect/
+│   ├── SKILL.md                   # Skill principal
 │   ├── system.md                   # Identidad v3.0.0
 │   ├── task.md                    # Instrucciones v3.0.0
 │   ├── scripts/
@@ -73,7 +74,7 @@ Skills-learning/
 │   ├── references/
 │   │   ├── schemas.md           # Esquemas JSON
 │   │   ├── writing-patterns.md # Patrones escritura
-│   │   └── examples.md        # Ejemplos canónicos
+│   │   └── examples.md         # Ejemplos canónicos
 │   └── data/
 │       └── examples.json        # 8 evals, 28 expectations
 ├── mejoras_v23_scripts_y_modificacion.md
@@ -88,9 +89,9 @@ Skills-learning/
 
 ---
 
-## Acerca de prompt_v22
+## Acerca de meta-skill-architect
 
-prompt_v22 (Meta-Skill Architect v3.0.0) es un **arquitecto autónomo de skills** que:
+meta-skill-architect (v3.0.0) es un **arquitecto autónoma de skills** que:
 
 - ✅ Diseña skills nuevas desde cero
 - ✅ Audita skills existentes

@@ -1,4 +1,4 @@
-# prompt_v22 — Meta-Skill Architect
+# meta-skill-architect
 
 Sistema de ingeniería de prompts para diseñar, auditar y mejorar skills SKILL.md para agentes de IA.
 
@@ -11,7 +11,7 @@ Sistema de ingeniería de prompts para diseñar, auditar y mejorar skills SKILL.
 
 ## Overview
 
-prompt_v22 es un **arquitecto autónomo de skills** que genera, audita y mejora skills siguiendo el estándar SKILL.md. A diferencia de skill-creator (que requiere Claude Code), prompt_v22 funciona en cualquier interfaz de chat compatible con prompts.
+meta-skill-architect es un **arquitecto autónomo de skills** que genera, audita y mejoran skills siguiendo el estándar SKILL.md. Funciona en cualquier interfaz de chat compatible con prompts.
 
 ### Qué hace
 
@@ -31,6 +31,7 @@ prompt_v22 es un **arquitecto autónomo de skills** que genera, audita y mejora 
 |---------|-----------|
 | `system.md` | Identidad y reglas invariantes (v3.0.0) |
 | `task.md` | Instrucciones operativas + ciclos (v3.0.0) |
+| `SKILL.md` | Skill instalable (carga system.md + task.md) |
 
 ### Scripts
 
@@ -59,31 +60,24 @@ prompt_v22 es un **arquitecto autónomo de skills** que genera, audita y mejora 
 
 ## Uso
 
+### Instalar
+
+```bash
+npx skills add ASamiraJasbonM/Skills-learning --skill meta-skill-architect
+```
+
 ### Modo interactivo (Claude/Gemini/OpenCode)
 
 ```markdown
-Carga system.md + task.md en el contexto del modelo.
+Carga @system.md @task.md en el contexto del modelo.
 El modelo ejecutará el ciclo automáticamente.
 ```
 
 ### Validación estructura
 
 ```bash
-python prompt_v22/scripts/validate_structure.py skill/SKILL.md
-python prompt_v22/scripts/validate_structure.py skill/SKILL.md --json
-```
-
-### Suite de evaluación
-
-```bash
-python prompt_v22/scripts/test_runner.py --data data/examples.json
-python prompt_v22/scripts/test_runner.py --json
-```
-
-### Servidor MCP
-
-```bash
-python prompt_v22/scripts/mcp_server.py
+python meta-skill-architect/scripts/validate_structure.py skill/SKILL.md
+python meta-skill-architect/scripts/validate_structure.py skill/SKILL.md --json
 ```
 
 ---
@@ -112,7 +106,7 @@ Análisis post-modificación → Comparación A/B → Trigger optimization
 
 ---
 
-## Protocolos avanzados
+## Protocolos avanzada
 
 ### Protocolo de Generalización
 Diagnostica problemas antes de modificar:
@@ -152,7 +146,7 @@ Detecta expectations débiles (triviales o no discriminantes).
 
 ## Comparación con skill-creator
 
-| Aspecto | skill-creator | prompt_v22 v3.0.0 |
+| Aspecto | skill-creator | meta-skill-architect v3.0.0 |
 |---------|--------------|-------------------|
 | Requiere Claude Code | ✅ | ❌ (funciona en chat) |
 | Patrones escritura | Implícitos | **Explícitos (7)** |
@@ -165,7 +159,8 @@ Detecta expectations débiles (triviales o no discriminantes).
 ## Estructura
 
 ```
-prompt_v22/
+meta-skill-architect/
+├── SKILL.md                   # Instalable
 ├── system.md                 # v3.0.0
 ├── task.md                   # v3.0.0
 ├── scripts/
@@ -186,4 +181,4 @@ prompt_v22/
 
 ## Licencia
 
-See `LICENSE.txt` in parent directory.
+MIT

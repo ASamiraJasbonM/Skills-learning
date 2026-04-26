@@ -1,79 +1,140 @@
 # Skills Learning
 
-Collection of installable skills for AI agents (OpenCode, Claude, etc.)
+Colección de skills instalables para agentes IA (OpenCode, Claude, etc.)
 
-## Skills Included
+## Skills Incluidos
 
 ### 1. Code Analysis
-- **Description:** Analyzes source code to identify bugs, security vulnerabilities, code smells, and performance optimization opportunities.
-- **Install:** `npx skills add ASamiraJasbonM/Skills-learning --skill code-analysis`
+- **Descripción:** Analiza código fuente para identificar bugs, vulnerabilidades de seguridad, code smells y oportunidades de optimización.
+- **Instalar:** `npx skills add ASamiraJasbonM/Skills-learning --skill code-analysis`
 
 ### 2. Django-Shield 2026
-- **Description:** Senior cybersecurity auditor for Django 5.x/6.x. Identifies logic and configuration vulnerabilities, analyzes attack surface (Taint Flow).
-- **Install:** `npx skills add ASamiraJasbonM/Skills-learning --skill django-shield`
+- **Descripción:** Auditor de ciberseguridad senior para Django 5.x/6.x. Identifica vulnerabilidades lógicas y de configuración, analiza superficie de ataque (Taint Flow).
+- **Instalar:** `npx skills add ASamiraJasbonM/Skills-learning --skill django-shield`
+
+### 3. Prompt v22 (Meta-Skill Architect)
+- **Descripción:** Sistema de ingeniería de prompts para diseñar, auditar y mejorar skills SKILL.md para agentes IA. Diseña skills nuevas, audita existentes,改进 iterativamente, adapta a plataformas específicas.
+- **Instalar:** `npx skills add ASamiraJasbonM/Skills-learning --skill prompt_v22`
+- **Versión:** 3.0.0
+- **Runtimes:** Claude, Gemini, GPT, Opencode, Kilocode
 
 ---
 
-## How to Install a Skill
+## Cómo Instalar un Skill
 
-### Option 1: Using npx skills (recommended)
+### Opción 1: Usando npx skills (recomendado)
 
 ```bash
-# Install a specific skill
-npx skills add ASamiraJasbonM/Skills-learning --skill <skill-name>
+# Instalar un skill específico
+npx skills add ASamiraJasbonM/Skills-learning --skill <nombre-skill>
 
-# Example: code-analysis
+# Ejemplo: code-analysis
 npx skills add ASamiraJasbonM/Skills-learning --skill code-analysis
 
-# Example: django-shield
+# Ejemplo: django-shield
 npx skills add ASamiraJasbonM/Skills-learning --skill django-shield
 
-# Install all skills
+# Ejemplo: prompt_v22
+npx skills add ASamiraJasbonM/Skills-learning --skill prompt_v22
+
+# Instalar todos los skills
 npx skills add ASamiraJasbonM/Skills-learning --skill '*'
 ```
 
-### Option 2: Manual
+### Opción 2: Manual
 
 ```bash
-# Clone the repository
+# Clonar el repositorio
 git clone https://github.com/ASamiraJasbonM/Skills-learning.git
 
-# Copy the desired skill to your skills directory
+# Copiar el skill deseado a tu directorio de skills
 cp -r Skills-learning/<skill-name> ~/.config/opencode/skills/
 ```
 
 ---
 
-## Repository Structure
+## Estructura del Repositorio
 
 ```
 Skills-learning/
+├── .gitignore                     # Ignora skill-creator/
 ├── code-analysis/
-│   └── SKILL.md          # Code analysis skill
+│   └── SKILL.md                   # Code analysis skill
 ├── django-shield/
-│   └── SKILL.md         # Django security audit skill
+│   └── SKILL.md                   # Django security audit skill
+├── prompt_v22/
+│   ├── system.md                   # Identidad v3.0.0
+│   ├── task.md                    # Instrucciones v3.0.0
+│   ├── scripts/
+│   │   ├── validate.sh            # Validador seguridad
+│   │   ├── validate_structure.py  # Validador estructura v2
+│   │   ├── test_runner.py        # Suite evaluación v2
+│   │   └── mcp_server.py       # Servidor MCP
+│   ├── references/
+│   │   ├── schemas.md           # Esquemas JSON
+│   │   ├── writing-patterns.md # Patrones escritura
+│   │   └── examples.md        # Ejemplos canónicos
+│   └── data/
+│       └── examples.json        # 8 evals, 28 expectations
+├── mejoras_v23_scripts_y_modificacion.md
+├── mejoras_v24_senior_engineer.md
+├── prompt_v22-analisis.md
+├── prompt_v22-cumplimiento.md
+├── prompt_v22_system.md
+├── prompt_v22_task.md
+├── sugerencias_prompt_v22.md
 └── README.md
 ```
 
 ---
 
-## Creating a New Skill
+## Acerca de prompt_v22
+
+prompt_v22 (Meta-Skill Architect v3.0.0) es un **arquitecto autónomo de skills** que:
+
+- ✅ Diseña skills nuevas desde cero
+- ✅ Audita skills existentes
+- ✅ Mejora skills iterativamente
+- ✅ Adapta a 5 plataformas (Claude, Gemini, GPT, Opencode, Kilocode)
+- ✅ Protocolo de Generalización (diagnóstico de problemas)
+- ✅ Análisis de Ejecutabilidad (instrucciones autonome)
+- ✅ Comparación A/B inline (sin subagentes)
+- ✅ Trigger Optimization (por razonamiento)
+- ✅ Metacrítica de Expectations
+
+** scripts:**
+- `validate.sh` — Validador seguridad (Capa 2)
+- `validate_structure.py` — Validador estructura YAML (8+ checks)
+- `test_runner.py` — Suite evaluación con grading.json
+- `mcp_server.py` — Servidor MCP para integración
+
+**Comparación con skill-creator:**
+| Aspecto | skill-creator | prompt_v22 v3.0.0 |
+|---------|--------------|-------------------|
+| Requiere Claude Code | ✅ | ❌ |
+| Patrones escritura | Implícitos | **Explícitos** |
+| Comparación A/B | Subagentes | **Inline** |
+| Multiplataforma | ❌ | **5 runtimes** |
+
+---
+
+## Crear un Nuevo Skill
 
 ```bash
-# Initialize a new skill
+# Inicializar un nuevo skill
 npx skills init my-new-skill
 
-# Edit the generated SKILL.md file
-# Push to GitHub and use:
-npx skills add YOUR_USERNAME/my-new-skill
+# Editar el archivo SKILL.md generado
+# Push a GitHub y usar:
+npx skills add TU_USUARIO/my-new-skill
 ```
 
 ---
 
-## Requirements
+## Requisitos
 
 - Node.js 18+
-- Compatible AI agent (OpenCode, Claude Code, etc.)
+- Agente IA compatible (OpenCode, Claude Code, etc.)
 
 ---
 

@@ -30,3 +30,11 @@ build/
 # Ignorar skill-creator completo
 skill-creator/
 documentacion/
+
+.agents/
+.claude/
+.commandcode/
+.kilocode/
+.kiro/
+.ruff_cache/
+.skills/

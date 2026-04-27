@@ -5,18 +5,39 @@ Colección de skills instalables para agentes IA (OpenCode, Claude, etc.)
 ## Skills Incluidos
 
 ### 1. Code Analysis
-- **Descripción:** Analiza código fuente para identificar bugs, vulnerabilidades de seguridad, code smells y oportunidades de optimización.
+- **Descripción:** Analiza código fuente para identificar bugs, vulnerabilidades de seguridad (CWE/OWASP), code smells y oportunidades de optimización.
 - **Instalar:** `npx skills add ASamiraJasbonM/Skills-learning --skill code-analysis`
+- **Versión:** 2.0.0
 
-### 2. Django-Shield 2026
-- **Descripción:** Auditor de ciberseguridad senior para Django 5.x/6.x. Identifica vulnerabilidades lógicas y de configuración, analiza superficie de ataque (Taint Flow).
+### 2. Django-Shield
+- **Descripción:** Auditor de ciberseguridad senior especializado en Django 5.x/6.x. Análisis de Taint Flow, auditoría de configuración y validación de autorización.
 - **Instalar:** `npx skills add ASamiraJasbonM/Skills-learning --skill django-shield`
+- **Versión:** 3.0.0
 
-### 3. Meta-Skill Architect
-- **Descripción:** Sistema de ingeniería de prompts para diseñar, auditar y mejorar skills SKILL.md para agentes IA. Diseña skills nuevas, audita existentes, mejora iterativamente, adapta a plataformas específicas.
+### 3. FastAPI-Shield
+- **Descripción:** Auditor de ciberseguridad para aplicaciones FastAPI. Especializado en validación Pydantic, seguridad en Dependency Injection y OAuth2/JWT.
+- **Instalar:** `npx skills add ASamiraJasbonM/Skills-learning --skill fastapi-shield`
+- **Versión:** 1.0.0
+
+### 4. Architecture Diagram Architect
+- **Descripción:** Transforma requerimientos técnicos en código ejecutable de Python usando la librería `diagrams` para visualizar arquitecturas.
+- **Instalar:** `npx skills add ASamiraJasbonM/Skills-learning --skill architecture-diagram-architect`
+- **Versión:** 1.0.0
+
+### 5. Git Master Architect
+- **Descripción:** Experto en Git para analizar cambios, redactar commits descriptivos y gestionar flujos de trabajo con branches y rebases.
+- **Instalar:** `npx skills add ASamiraJasbonM/Skills-learning --skill git-master-architect`
+- **Versión:** 1.0.0
+
+### 6. MCP Python Architect
+- **Descripción:** Diseña y construye servidores Model Context Protocol (MCP) robustos en Python con validación Pydantic.
+- **Instalar:** `npx skills add ASamiraJasbonM/Skills-learning --skill mcp-python-architect`
+- **Versión:** 1.1.0
+
+### 7. Meta-Skill Architect
+- **Descripción:** Sistema de ingeniería de prompts para diseñar, auditar y mejorar skills SKILL.md para agentes IA.
 - **Instalar:** `npx skills add ASamiraJasbonM/Skills-learning --skill meta-skill-architect`
 - **Versión:** 3.0.0
-- **Runtimes:** Claude, Gemini, GPT, Opencode, Kilocode
 - **Última actualización:** 2026-04-26 (post-evaluación senior)
 
 ---
@@ -28,15 +49,6 @@ Colección de skills instalables para agentes IA (OpenCode, Claude, etc.)
 ```bash
 # Instalar un skill específico
 npx skills add ASamiraJasbonM/Skills-learning --skill <nombre-skill>
-
-# Ejemplo: code-analysis
-npx skills add ASamiraJasbonM/Skills-learning --skill code-analysis
-
-# Ejemplo: django-shield
-npx skills add ASamiraJasbonM/Skills-learning --skill django-shield
-
-# Ejemplo: meta-skill-architect
-npx skills add ASamiraJasbonM/Skills-learning --skill meta-skill-architect
 
 # Instalar todos los skills
 npx skills add ASamiraJasbonM/Skills-learning --skill '*'
@@ -58,65 +70,27 @@ cp -r Skills-learning/<skill-name> ~/.config/opencode/skills/
 
 ```
 Skills-learning/
-├── .gitignore                     # Ignora skill-creator/
-├── code-analysis/
-│   └── SKILL.md                   # Code analysis skill
-├── django-shield/
-│   └── SKILL.md                   # Django security audit skill
-├── meta-skill-architect/
-│   ├── SKILL.md                   # Skill principal
-│   ├── system.md                   # Identidad v3.0.0
-│   ├── task.md                    # Instrucciones v3.0.0
-│   ├── scripts/
-│   │   ├── validate.sh            # Validador seguridad
-│   │   ├── validate_structure.py  # Validador estructura v2
-│   │   ├── test_runner.py        # Suite evaluación v2
-│   │   └── mcp_server.py       # Servidor MCP
-│   ├── references/
-│   │   ├── schemas.md           # Esquemas JSON
-│   │   ├── writing-patterns.md # Patrones escritura
-│   │   └── examples.md         # Ejemplos canónicos
-│   └── data/
-│       └── examples.json        # 8 evals, 28 expectations
-├── mejoras_v23_scripts_y_modificacion.md
-├── mejoras_v24_senior_engineer.md
-├── prompt_v22-analisis.md
-├── prompt_v22-cumplimiento.md
-├── prompt_v22_system.md
-├── prompt_v22_task.md
-├── sugerencias_prompt_v22.md
+├── code-analysis/          # Code analysis skill
+├── django-shield/         # Django security audit
+├── fastapi-shield/        # FastAPI security audit
+├── architecture-diagram-architect/  # Diagram generation
+├── git-master-architect/  # Git expertise
+├── mcp-python-architect/ # MCP server builder
+├── meta-skill-architect/  # SKILL.md architect
 └── README.md
 ```
 
 ---
 
-## Acerca de meta-skill-architect
+## Categorías por Dominio
 
-meta-skill-architect (v3.0.0) es un **arquitecto autónoma de skills** que:
-
-- ✅ Diseña skills nuevas desde cero
-- ✅ Audita skills existentes
-- ✅ Mejora skills iterativamente
-- ✅ Adapta a 5 plataformas (Claude, Gemini, GPT, Opencode, Kilocode)
-- ✅ Protocolo de Generalización (diagnóstico de problemas)
-- ✅ Análisis de Ejecutabilidad (instrucciones autonome)
-- ✅ Comparación A/B inline (sin subagentes)
-- ✅ Trigger Optimization (por razonamiento)
-- ✅ Metacrítica de Expectations
-
-** scripts:**
-- `validate.sh` — Validador seguridad (Capa 2)
-- `validate_structure.py` — Validador estructura YAML (8+ checks)
-- `test_runner.py` — Suite evaluación con grading.json
-- `mcp_server.py` — Servidor MCP para integración
-
-**Comparación con skill-creator:**
-| Aspecto | skill-creator | prompt_v22 v3.0.0 |
-|---------|--------------|-------------------|
-| Requiere Claude Code | ✅ | ❌ |
-| Patrones escritura | Implícitos | **Explícitos** |
-| Comparación A/B | Subagentes | **Inline** |
-| Multiplataforma | ❌ | **5 runtimes** |
+| Dominio | Skills |
+|--------|-------|
+| **Seguridad** | django-shield, fastapi-shield |
+| **Ingeniería de Código** | code-analysis, mcp-python-architect |
+| **Arquitectura** | architecture-diagram-architect |
+| **DevOps** | git-master-architect |
+| **Diseño de Skills** | meta-skill-architect |
 
 ---
 

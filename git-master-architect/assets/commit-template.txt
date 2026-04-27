@@ -1,0 +1,5 @@
+# <tipo>(<scope>): <descripción corta en minúsculas>
+#
+# Tipos: feat, fix, chore, docs, style, refactor, perf, test
+#
+# Ejemplo: feat(ui): add loading spinner to dashboard

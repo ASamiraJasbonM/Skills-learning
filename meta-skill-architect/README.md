@@ -2,7 +2,7 @@
 
 Sistema de ingeniería de prompts para diseñar, auditar y mejorar skills SKILL.md para agentes de IA.
 
-| Versión | 3.0.0 |
+| Versión | 4.0.0 |
 |--------|--------|
 | Estado | ACTIVO |
 | Runtimes | Claude, Gemini, GPT, Opencode, Kilocode |
@@ -42,6 +42,14 @@ meta-skill-architect es un **arquitecto autónomo de skills** que genera, audita
 | `scripts/test_runner.py` | Suite evaluación LLM-as-a-Judge (grading.json) |
 | `scripts/mcp_server.py` | Servidor MCP para integración |
 
+> **Estado:** `mcp_server.py` es un stub de referencia. Para uso en producción,
+> implementar `execute_skill()` con llamada real al LLM (ver comentarios en el archivo).
+>
+> **Nota sobre `test_runner.py`:** En modo fallback (sin CLI de Claude Code disponible),
+> los resultados de evaluación NO son confiables. Para evals reales, ejecuta desde
+> Claude Code con `claude -p` disponible. Las evals cuantitativas requieren entorno
+> Claude Code — no presentar como funcionalidad completa en entornos de chat.
+
 ### References
 
 | Archivo | Descripción |
@@ -56,6 +64,7 @@ meta-skill-architect es un **arquitecto autónomo de skills** que genera, audita
 |---------|-------------|
 | `data/examples.json` | 8 evals con 28 expectations |
 | `data/validate_fixtures/` | 5 fixtures para testing del validador |
+| `data/knowledge-log.md` | Registro de patrones de fallo, soluciones y anti-patrones |
 
 ### Assets
 
@@ -200,6 +209,7 @@ Detecta expectations débiles (triviales o no discriminantes).
 | 2.3.0 | 2025-05-26 | Sugerencias originales implementadas |
 | 2.4.0 | 2025-05-26 | Mejoras v2.4.0 (scripts, auditoría) |
 | 3.0.0 | 2026-04-26 | Mejoras v3.0.0 (protocolos avanzados, post-evaluación senior) |
+| 4.0.0 | 2026-04-27 | Editor estructural completo: enriquecimiento, autoevaluación, migración, evals, knowledge log |
 
 ---
 

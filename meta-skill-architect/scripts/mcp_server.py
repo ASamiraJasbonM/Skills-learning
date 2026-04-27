@@ -39,16 +39,11 @@ def execute_skill(user_input: str, context: dict = None) -> dict:
     3. Send to the underlying LLM
     4. Return the generated artifact
     """
-    # For now, return a simulated response
-    return {
-        "status": "success",
-        "timestamp": datetime.datetime.now().isoformat(),
-        "artifact": f"""## PASO 1 — Intención
-Procesando petición del usuario: {user_input[:30]}...
-
-[Resultado simulado - completar con implementación real]
-""",
-    }
+    raise NotImplementedError(
+        "execute_skill() es un stub. Implementa la llamada a tu LLM preferido "
+        "(e.g., OpenAI API, Anthropic API, Google AI) pasando system.md + task.md "
+        "como contexto y user_input como prompt del usuario."
+    )
 
 
 def handle_request(request_str: str) -> str:

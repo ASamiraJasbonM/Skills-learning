@@ -5,6 +5,14 @@ test_runner.py v2 - LLM-as-a-Judge evaluation suite for meta-skill-architect
 Evaluates skill outputs using another LLM instance as judge.
 Produces grading.json estructurado compatible con references/schemas.md.
 
+⚠️  ADVERTENCIA: En modo fallback (sin CLI de Claude Code disponible),
+los resultados de evaluación NO son confiables. El fallback heurístico
+(búsqueda de substring) puede reportar passed: true en expectations que
+el output no cumple realmente.
+
+Para evals reales, ejecuta desde Claude Code con `claude -p` disponible.
+Las evals cuantitativas requieren entorno Claude Code.
+
 Usage:
     python scripts/test_runner.py --data data/examples.json
     python scripts/test_runner.py --data data/examples.json --json
@@ -102,6 +110,9 @@ Responde en formato JSON:
         pass
 
     # Fallback: Heuristic evaluation
+    # ⚠️ ADVERTENCIA: Este fallback NO es confiable.
+    # En modo fallback (sin CLI), los resultados NO reflejan la realidad.
+    # Para evals reales, ejecuta desde Claude Code con `claude -p` disponible.
     expectation_lower = expectation.lower()
     output_lower = skill_output.lower()
 
@@ -109,12 +120,12 @@ Responde en formato JSON:
     if expectation_lower.replace(" ", "") in output_lower.replace(" ", ""):
         return {
             "passed": True,
-            "evidence": f"Expectation '{expectation}' verificada en output",
+            "evidence": f"Expectation '{expectation}' verificada en output (fallback heurístico — NO confiable)",
         }
 
     return {
         "passed": False,
-        "evidence": f"Expectation '{expectation}' no encontrada en output",
+        "evidence": f"Expectation '{expectation}' no encontrada en output (fallback heurístico — NO confiable)",
     }
 
 

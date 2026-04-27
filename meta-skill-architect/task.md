@@ -1,6 +1,6 @@
 ---
 name: meta-skill-architect
-version: 3.0.0
+version: 4.0.0
 part: task-prompt
 note: >
   Este archivo va en el primer turno del usuario o como instrucción de tarea.
@@ -26,6 +26,7 @@ Antes de comenzar, determina el punto de entrada según la solicitud del usuario
 | El usuario dice "audita esto" | Ve directo al Paso 5 (Validación) con focus en auditoría |
 | El usuario dice "mejora esto" sin contexto | Haz una pregunta: "¿qué comportamiento actual no te satisface?" |
 | El usuario ha iterado ≥2 veces | Ejecuta Análisis Post-Modificación antes de proponer más cambios |
+| El usuario trae un archivo que NO es SKILL.md estándar | Modo Migración (ver sección al final) |
 
 **Al modificar una skill existente:**
 - Preserva el `name` y `version` originales
@@ -90,6 +91,11 @@ Estructura recomendada: **mínima** — flujo de 3 pasos, sin dependencias exter
 [Si claro: "Sin ambigüedad. Plataforma: X."
 Si	vago: ≤2 preguntas en opciones y DETENTE hasta recibir respuesta.]
 
+**Criterio de terminación del Paso 2:**
+- Si el usuario responde TODAS las preguntas → avanza al Paso 3
+- Si responde PARCIALMENTE → acepta lo respondido, aplica supuesto conservador para lo no respondido, documenta en ## Supuestos, avanza
+- Si no responde en 2 mensajes consecutivos → aplica todos los supuestos conservadores, documenta, avanza
+
 ## PASO 3 — Riesgos
 [Evalúa 4 vectores con mitigación:
 - Inyección de prompt: [riesgo o "no aplica"]
@@ -151,9 +157,59 @@ Lee el artefacto como si fueras el agente que lo usará y responde: "¿Puedo eje
 
 ---
 
+## Protocolo de Enriquecimiento Estructural (S1)
+
+Ejecuta DESPUÉS del Paso 4 (Artefacto), si la skill lo requiere:
+
+### 1. Diagnóstico de necesidades
+
+Para cada recurso, evalúa:
+
+| Señal en el SKILL.md | Recurso a generar |
+|----------------------|------------------|
+| Menciona una API, esquema o estándar externo | references/[nombre].md |
+| Contiene pasos determinísticos repetibles | scripts/[nombre].py o .sh |
+| Produce un output con estructura fija | assets/template.[ext] |
+| SKILL.md supera 400 líneas | Refactorizar → referencias externas |
+
+### 2. Generación por recurso
+
+**references/[nombre].md:**
+- Mueve toda documentación estática (APIs, esquemas, guías) fuera del SKILL.md
+- El SKILL.md queda con punteros: "Para detalles del API, consulta references/api-docs.md"
+- Cada archivo references/: < 10.000 palabras, kebab-case, con tabla de contenidos
+
+**scripts/[nombre].py:**
+- Genera cuando hay ≥3 pasos secuenciales determinísticos (transformar, validar, formatear)
+- Incluye: docstring, argparse, manejo de errores, exit codes explícitos
+- El SKILL.md incluye: `Ejecutar: python scripts/nombre.py --input X --output Y`
+
+**assets/template.[ext]:**
+- Genera cuando el output tiene estructura fija (JSON, Markdown, YAML)
+- Usa placeholders `{{ campo }}` para valores dinámicos
+- El SKILL.md incluye: "Cargar assets/template.json y sustituir placeholders"
+
+### 3. Árbol de salida
+
+Presenta siempre la estructura completa al usuario:
+```
+nombre-skill/
+├── SKILL.md
+├── references/
+│   └── [generados]
+├── scripts/
+│   └── [generados]
+└── assets/
+    └── [generados]
+```
+
+**Criterio de terminación:** Cuando todos los recursos identificados en el diagnóstico tienen un archivo generado o una decisión explícita de no generarlo.
+
+---
+
 ## Plantilla SKILL.md — Versión Completa
 
-Usar cuando >4000 tokens disponibles:
+Usa plantilla completa en todos los casos, excepto cuando se apliquen las señales de versión mínima:
 
 > Carga desde `assets/template-full.md`
 
@@ -173,7 +229,12 @@ Usar cuando >4000 tokens disponibles:
 
 ## Plantilla SKILL.md — Versión Mínima
 
-Usar cuando <4000 tokens (típico en Opencode/Kilocode). Al final: `[Versión mínima — omitidas: X, Y. Regenerar si contexto lo permite.]`
+Usa plantilla mínima si se cumple ALGUNA de estas señales observables:
+- El usuario menciona Kilocode u Opencode explícitamente
+- El usuario dice "hazlo corto", "versión compacta", "mínimo"
+- La skill tiene ≤3 pasos y sin referencias externas
+
+Al final: `[Versión mínima — omitidas: X, Y. Regenerar si contexto lo permite.]`
 
 > Carga desde `assets/template-minimal.md`
 
@@ -320,6 +381,12 @@ Una instrucción narrow solo funciona para el ejemplo que la inspiró. Señales:
 
 Cuando el usuario pida comparar dos versiones de un SKILL.md o cuando hayas generado una versión nueva y quieras evaluarla contra la anterior:
 
+### Identificación de versiones
+
+- Si el usuario provee dos versiones explícitas → Alpha = primera, Beta = segunda
+- Si el usuario provee una y acabas de generar otra → Alpha = versión del usuario, Beta = versión generada
+- Si el usuario solo tiene una versión → no ejecutes A/B, ejecuta auditoría simple
+
 ### Protocolo de comparación ciega
 
 **Paso 1: Anonimiza internamente.**
@@ -354,6 +421,21 @@ Llama a las versiones "Versión Alpha" y "Versión Beta" sin revelar cuál es la
 ## Optimización de Descripción (sin ejecución)
 
 Cuando el usuario quiera mejorar el triggering de su skill, aplica este protocolo de diseño (no requiere ejecutar `run_loop.py`):
+
+### Paso 0: Coherencia description↔cuerpo (S11)
+
+Antes de las 10 queries de prueba:
+
+1. Lee la description del frontmatter
+2. Lee la primera sección del cuerpo (típicamente la descripción ampliada)
+3. Verifica:
+   - ¿La description menciona algo que el cuerpo no implementa? → Contradicción
+   - ¿El cuerpo hace algo que la description no menciona? → Undertriggering garantizado
+   - ¿La description usa términos que el usuario no usaría? → Undertriggering probable
+4. Reporta incoherencias antes de proponer nueva description
+
+**Señal crítica:** Si la description dice "activa cuando X" pero el cuerpo no implementa X,
+corregir el cuerpo ANTES de optimizar la description.
 
 ### Paso 1: Genera 10 queries de prueba mental
 Crea 5 queries que DEBERÍAN disparar la skill y 5 que NO deberían:
@@ -420,3 +502,194 @@ Para cada expectation débil, propón:
 ## Patrones de Escritura
 
 Al escribir o revisar cualquier SKILL.md, consulta `references/writing-patterns.md` para los patrones de escritura. No los cargues automáticamente — solo cuando estés generando instrucciones y quieras verificar que son ejecutables.
+
+---
+
+## Catálogo de Scripts por Dominio (S3)
+
+Al generar o auditar una skill, evalúa si alguno de estos scripts aplica:
+
+| Dominio | Script típico | Propósito |
+|---------|--------------|-----------|
+| Validación de datos | validate_input.py | Verifica formato, tipos, rangos antes de procesar |
+| Procesamiento de texto | transform.py | Normaliza, limpia, reformatea texto |
+| Integración de API | call_api.py | Wrapper con retry, timeout, manejo de errores HTTP |
+| Generación de reportes | generate_report.py | Produce output desde plantilla + datos |
+| Testing de la skill | test_skill.py | Ejecuta casos de prueba contra el SKILL.md |
+| Instalación de dependencias | setup.sh | Instala requirements, verifica entorno |
+| Validación de estructura | validate_structure.py | (ya existe en tu skill) |
+
+Para cada script identificado:
+1. Genera el esqueleto con docstring, argparse, exit codes
+2. Referéncialo desde SKILL.md con el comando exacto de ejecución
+3. Documenta el contrato (input esperado, output, exit codes)
+
+---
+
+## Protocolo de Generación de Plantillas (S4)
+
+Cuando el ## Formato de Salida del SKILL.md describe una estructura fija:
+
+1. Identifica el formato: JSON, YAML, Markdown, CSV, HTML
+2. Extrae los campos del formato de salida
+3. Genera assets/template.[ext] con placeholders `{{ campo }}`
+4. Actualiza el SKILL.md para referenciar la plantilla:
+   "Cargar assets/template.json, sustituir {{ campo }} con valor real"
+
+Ejemplo: Si el formato es:
+```
+Urgencia: [P1/P2/P3/P4]
+Sistema: [sistema]
+Resumen: [texto]
+```
+
+Genera `assets/output-template.md`:
+```
+Urgencia: {{ urgencia }}
+Sistema: {{ sistema }}
+Resumen: {{ resumen }}
+```
+
+---
+
+## Modo: Autoevaluación (S6)
+
+Cuando el usuario diga "audítate a ti mismo", "evalúa tu propio SKILL.md",
+o "¿cumples tus propios estándares?":
+
+1. Carga @SKILL.md (este archivo)
+2. Ejecuta el Paso 5 (Validación) completo sobre él, con evidencia textual
+3. Aplica el Análisis de Ejecutabilidad a cada instrucción de las Instrucciones Operativas
+4. Produce un reporte con:
+   - Criterios que pasan (con cita textual como evidencia)
+   - Criterios que fallan (con propuesta de corrección)
+   - Score: N/5 criterios formales
+5. Si el score < 5/5: propón la corrección y pregunta al usuario si la aplica
+
+**Criterio de terminación:** El reporte está completo cuando cubre los 5 criterios
+formales con evidencia textual, no con declaraciones generales.
+
+---
+
+## Ciclo de Automejoramiento (S7)
+
+Cuando la autoevaluación detecta un criterio que falla:
+
+1. **Diagnostica:** ¿Es instrucción ambigua, competing instructions, o modelo mental roto?
+2. **Propón cambio quirúrgico:**
+   - Texto exacto a reemplazar (cita del SKILL.md actual)
+   - Texto de reemplazo propuesto
+   - Mecanismo esperado: por qué este cambio resuelve el fallo
+   - Criterio que resuelve: criterio #N de la rúbrica
+   - Riesgo de regresión: qué otro criterio podría verse afectado
+3. **Solicita aprobación:** "¿Aplico este cambio al SKILL.md? (sí/no)"
+4. **Si aprobado:** genera el SKILL.md actualizado con versión incrementada (x.y → x.y+1)
+   y añade fila al ## Historial de cambios
+
+**Límite:** Máximo 2 cambios por ciclo de automejoramiento.
+Más cambios hacen imposible atribuir mejoras o regresiones.
+
+---
+
+## Protocolo de Actualización de Estándar (S8)
+
+Cuando el usuario diga "el estándar cambió", "ahora el campo X es requerido",
+o proporcione documentación nueva del formato SKILL.md:
+
+1. Identifica qué cambió: campo nuevo, campo deprecado, nueva regla de validación
+2. Evalúa impacto en:
+   - Frontmatter de las plantillas (template-full.md, template-minimal.md)
+   - Checks en validate_structure.py
+   - Ejemplos en examples.md y data/examples.json
+3. Produce diff de los cambios propuestos para cada archivo afectado
+4. Solicita aprobación antes de generar los archivos actualizados
+5. Registra el cambio en data/knowledge-log.md bajo "Actualizaciones de Estándar"
+
+**Señales de obsolescencia a monitorear:**
+- El usuario reporta que validate_structure.py rechaza skills válidas → check puede estar desactualizado
+- El usuario reporta que openskills install rechaza skills generadas por la skill → frontmatter obsoleto
+- El usuario menciona un campo nuevo en la documentación oficial
+
+---
+
+## Modo: Migración de Skill (S9)
+
+Cuando el usuario trae un archivo que NO es un SKILL.md estándar:
+
+1. Lee el archivo proporcionado
+2. Identifica el formato origen:
+   - Sin frontmatter YAML → skill informal / prompt sin estructura
+   - Frontmatter con campos no estándar → skill de otra plataforma
+   - JSON → posible Action de GPT o configuración de Gemini
+3. Extrae: intención, pasos, restricciones, errores, criterios de éxito
+4. Mapea al estándar SKILL.md:
+   - Intención → description en frontmatter
+   - Pasos → ## Instrucciones Operativas / ## Tarea
+   - Restricciones → MoSCoW en ## Restricciones
+   - Errores detectables → ## Manejo de Errores
+   - Criterios de éxito → ## Rúbrica
+5. Genera SKILL.md estándar
+6. Ejecuta Paso 5 (Validación) sobre el resultado
+7. Reporta qué información faltaba en el original y qué supuestos aplicaste
+
+---
+
+## Protocolo de Generación de Evals (S10)
+
+Cuando el usuario diga "genera evals para esta skill" o después de crear una skill nueva:
+
+1. Lee la ## Rúbrica: cada criterio de éxito se convierte en una expectation
+2. Lee el ## Manejo de Errores: cada escenario se convierte en un eval de categoría "robustez"
+3. Lee los ## Riesgos Identificados: cada riesgo se convierte en un eval de categoría "seguridad"
+4. Genera entre 4 y 8 evals con este formato:
+
+```json
+{
+  "id": N,
+  "category": "calidad|seguridad|robustez|ambiguedad",
+  "prompt": "[prompt que debería disparar el comportamiento]",
+  "expected_output": "[descripción del output esperado]",
+  "expectations": [
+    "[expectation cuantificable 1]",
+    "[expectation cuantificable 2]"
+  ]
+}
+```
+
+5. Aplica la Metacrítica de Expectations a cada expectation generada antes de mostrarlas.
+   Toda expectation débil se fortalece antes de incluirla.
+
+**Criterio de calidad para las expectations generadas:**
+- Cada una tiene threshold cuantificable o estructura específica citada
+- Ninguna pasa si el output está vacío
+- Al menos 1 eval de seguridad si la skill procesa inputs del usuario
+
+---
+
+## Modo: Suite de Skills (S12)
+
+Cuando el usuario quiera crear múltiples skills relacionadas:
+
+1. Identifica las skills candidatas:
+   - ¿Hay un flujo principal que orquesta subskills? → skill orquestadora + subskills
+   - ¿Hay comportamientos mutuamente excluyentes? → skills separadas con descriptions distintas
+   - ¿Hay conocimiento compartido? → references/ compartido entre skills
+
+2. Propón arquitectura:
+   ```
+   mi-suite/
+   ├── orchestrator/
+   │   └── SKILL.md (decide cuál subskill usar)
+   ├── subskill-a/
+   │   └── SKILL.md
+   ├── subskill-b/
+   │   └── SKILL.md
+   └── shared/
+       └── references/
+           └── common-docs.md
+   ```
+
+3. Genera cada skill en orden: primero las subskills, luego la orquestadora
+
+4. Verifica que las descriptions no se solapen entre skills de la suite
+   (aplica Trigger Optimization a cada una por separado)

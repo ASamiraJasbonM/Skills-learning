@@ -84,7 +84,7 @@ def validate_name(name: str) -> tuple[bool, str]:
         return False, "Campo 'name' vacío"
 
     if len(name) > 64:
-        return False, f"name太长 ({len(name)} chars, máx 64)"
+        return False, f"name demasiado largo ({len(name)} chars, máx 64)"
 
     if not re.match(r"^[a-z0-9][a-z0-9-]*$", name):
         return False, f"name debe ser kebab-case (a-z, 0-9, guiones)"
@@ -106,7 +106,7 @@ def validate_description(description: str) -> tuple[bool, str]:
     if len(description) > 1024:
         return (
             False,
-            f"description terlalu panjang ({len(description)} chars, máx 1024)",
+            f"description demasiado larga ({len(description)} chars, máx 1024)",
         )
 
     if "<" in description or ">" in description:
@@ -123,31 +123,47 @@ def validate_compatibility(compatibility: str) -> tuple[bool, str]:
     if len(compatibility) > 500:
         return (
             False,
-            f"compatibility terlalu panjang ({len(compatibility)} chars, máx 500)",
+            f"compatibility demasiado larga ({len(compatibility)} chars, máx 500)",
         )
 
     return True, ""
 
 
 def count_error_rows(content: str) -> int:
-    """Cuenta filas en la tabla de Manejo de Errores."""
+    """Cuenta filas en la tabla de Manejo de Errores.
+
+    Busca la sección completa hasta el próximo '##', sin romper en línea vacía.
+    """
     lines = content.split("\n")
     in_errors_table = False
+    header_seen = False
     row_count = 0
 
     for line in lines:
-        if "## Manejo de Errores" in line or "## Manejo de Errores" in line:
+        # Detectar inicio de la sección
+        if "## Manejo de Errores" in line:
             in_errors_table = True
             continue
 
-        if in_errors_table:
-            if line.strip().startswith("|") and "---" not in line:
-                row_count += 1
-            elif line.strip().startswith("##") or line.strip() == "":
-                if row_count > 0:
-                    break
+        # Si llegamos a otra sección, terminamos
+        if in_errors_table and line.strip().startswith("##"):
+            break
 
-    return max(0, row_count - 1)
+        if in_errors_table:
+            # Saltar separador de tabla (línea con ---)
+            if "---" in line and line.strip().startswith("|"):
+                header_seen = True
+                continue
+
+            # Contar filas de datos (solo después del header)
+            if line.strip().startswith("|"):
+                if header_seen:
+                    row_count += 1
+                else:
+                    # Primera línea con | es el header
+                    header_seen = True
+
+    return row_count
 
 
 def check_no_placeholder(content: str) -> tuple[bool, str]:
@@ -160,29 +176,34 @@ def check_no_placeholder(content: str) -> tuple[bool, str]:
 
 
 def check_rubrica_has_both_columns(content: str) -> tuple[bool, str]:
-    """La rubrica debe tener columna de éxito Y fallo, no solo éxito."""
-    rubrica_section = None
+    """La rubrica debe tener columna de éxito Y fallo, no solo éxito.
+
+    Examina toda la sección de rúbrica, no solo la primera línea.
+    """
     lines = content.split("\n")
     in_rubrica = False
+    rubrica_content_lines = []
+
     for line in lines:
         if "## Rúbrica" in line or "## Rúbrica de Validación" in line:
             in_rubrica = True
             continue
         if in_rubrica:
-            if line.strip().startswith("##") and "Rúbrica" not in line:
+            # Si llegamos a otra sección, terminamos
+            if line.strip().startswith("##"):
                 break
-            rubrica_section = line
-            break
+            rubrica_content_lines.append(line)
 
-    if not rubrica_section:
+    if not rubrica_content_lines:
         return False, "Sección ## Rúbrica no encontrada"
 
-    rubrica_lower = rubrica_section.lower()
+    # Examinar todo el contenido de la sección de rúbrica
+    rubrica_text = "\n".join(rubrica_content_lines).lower()
     has_success = any(
-        w in rubrica_lower for w in ["éxito", "pasa", "correcto", "pass", "success"]
+        w in rubrica_text for w in ["éxito", "pasa", "correcto", "pass", "success"]
     )
     has_failure = any(
-        w in rubrica_lower for w in ["falla", "error", "incorrecto", "fail", "fallo"]
+        w in rubrica_text for w in ["falla", "error", "incorrecto", "fail", "fallo"]
     )
     if not (has_success and has_failure):
         return False, "Rúbrica debe indicar criterios de éxito Y fallo"
@@ -191,24 +212,26 @@ def check_rubrica_has_both_columns(content: str) -> tuple[bool, str]:
 
 def check_error_table_has_actions(content: str) -> tuple[bool, str]:
     """Cada fila de la tabla de errores debe tener columna Acción."""
-    errors_section = None
     lines = content.split("\n")
     in_errors = False
+    error_table_lines = []
+
     for line in lines:
         if "## Manejo de Errores" in line:
             in_errors = True
             continue
         if in_errors:
-            if line.strip().startswith("##") and "Manejo" not in line:
+            # Si llegamos a otra sección, terminamos
+            if line.strip().startswith("##"):
                 break
-            errors_section = line
-            break
+            error_table_lines.append(line)
 
-    if not errors_section:
+    if not error_table_lines:
         return False, "Sección ## Manejo de Errores no encontrada"
 
+    # Contar filas de datos en la tabla (excluyendo header y separador)
     rows = [
-        l for l in content.split("\n") if l.strip().startswith("|") and "---" not in l
+        l for l in error_table_lines if l.strip().startswith("|") and "---" not in l
     ]
     data_rows = rows[1:] if len(rows) > 1 else []
     if len(data_rows) < 4:
@@ -230,6 +253,24 @@ def validate_sections(content: str, is_minima: bool = False) -> tuple[bool, list
         missing.append("## Rúbrica (o ## Rúbrica de Validación)")
 
     return len(missing) == 0, missing
+
+
+def check_skill_md_length(content: str) -> tuple[bool, str]:
+    """Detecta SKILL.md sobrecargado — candidato a refactorización."""
+    word_count = len(content.split())
+    line_count = len(content.splitlines())
+
+    if word_count > 5000:
+        return False, (
+            f"SKILL.md tiene {word_count} palabras (máx recomendado: 5000). "
+            "Mover documentación estática a references/."
+        )
+    if line_count > 500:
+        return False, (
+            f"SKILL.md tiene {line_count} líneas (máx recomendado: 500). "
+            "Considerar estructura completa con references/."
+        )
+    return True, f"{word_count} palabras, {line_count} líneas — dentro del límite"
 
 
 def validate_structure(skill_path: Path, fix: bool = False) -> tuple[bool, list[str]]:
@@ -299,6 +340,11 @@ def validate_structure(skill_path: Path, fix: bool = False) -> tuple[bool, list[
     valid, msg = check_error_table_has_actions(content)
     if not valid:
         errors.append(f"error-table: {msg}")
+
+    # Check 10: Peso del SKILL.md (S2)
+    valid, msg = check_skill_md_length(content)
+    if not valid:
+        errors.append(f"peso: {msg}")
 
     return len(errors) == 0, errors
 

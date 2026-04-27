@@ -17,6 +17,7 @@ Colección de skills instalables para agentes IA (OpenCode, Claude, etc.)
 - **Instalar:** `npx skills add ASamiraJasbonM/Skills-learning --skill meta-skill-architect`
 - **Versión:** 3.0.0
 - **Runtimes:** Claude, Gemini, GPT, Opencode, Kilocode
+- **Última actualización:** 2026-04-26 (post-evaluación senior)
 
 ---
 

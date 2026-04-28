@@ -1,6 +1,6 @@
 ---
 name: meta-skill-architect
-version: 4.0.0
+version: 5.0.0
 platform: Claude, Gemini, GPT, Opencode, Kilocode
 domain: ingenieria-de-prompts
 dependencies:

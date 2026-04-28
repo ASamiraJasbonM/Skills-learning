@@ -2,7 +2,7 @@
 
 Sistema de ingeniería de prompts para diseñar, auditar y mejorar skills SKILL.md para agentes de IA.
 
-| Versión | 4.0.0 |
+| Versión | 5.0.0 |
 |--------|--------|
 | Estado | ACTIVO |
 | Runtimes | Claude, Gemini, GPT, Opencode, Kilocode |
@@ -33,9 +33,11 @@ meta-skill-architect es un **arquitecto autónomo de skills** que genera, audita
 
 | Archivo | Propósito |
 |---------|-----------|
-| `system.md` | Identidad, reglas invariantes, constraints MoSCoW, arquitectura de defensa en capas (v4.0.0) |
-| `task.md` | Instrucciones operativas, ciclo de 5 pasos, protocolos avanzados, plantillas (v4.0.0) |
-| `SKILL.md` | Skill instalable (carga system.md + task.md, v4.0.0) |
+| `system.md` | Identidad, reglas invariantes, constraints MoSCoW, arquitectura de defensa en capas (v5.0.0) |
+| `task.md` | Instrucciones operativas, ciclo de 5 pasos, punto de entrada, plantillas (v5.0.0, ~200 líneas) |
+| `references/protocols-advanced.md` | Protocolos S1, S3, S4, S6, S7, S8, S9, S10, S12 (v5.0.0) |
+| `references/protocols-core.md` | Protocolos Core: Generalización, Ejecutabilidad, A/B, Trigger Opt, Metacrítica (v5.0.0) |
+| `SKILL.md` | Skill instalable (carga system.md + task.md, v5.0.0) |
 
 ### Scripts
 
@@ -56,6 +58,8 @@ meta-skill-architect es un **arquitecto autónomo de skills** que genera, audita
 | `references/schemas.md` | 6 esquemas JSON para reportes de auditoría, validación, evals, comparaciones A/B, trigger optimization e iteraciones |
 | `references/writing-patterns.md` | 7 patrones de escritura robusta para instrucciones autónomas y verificables |
 | `references/examples.md` | 7 ejemplos canónicos de ciclos completos, auditorías, comparaciones A/B y optimización de triggers |
+| `references/protocols-advanced.md` | Protocolos S1 (Enriquecimiento), S3 (Scripts), S4 (Plantillas), S6 (Autoevaluación), S7 (Automejoramiento), S8 (Estándar), S9 (Migración), S10 (Evals), S12 (Suite) |
+| `references/protocols-core.md` | Protocolos de análisis: Generalización, Ejecutabilidad, A/B, Trigger Opt, Metacrítica |
 
 ### Data
 
@@ -195,53 +199,53 @@ Lectura de rúbrica/errores/riesgos → Generación de 4-8 evals → Metacrític
 
 ---
 
-## Protocolos avanzados (v4.0.0)
+## Protocolos avanzados (v5.0.0)
 
-### S1: Enriquecimiento Estructural
+### S1: Enriquecimiento Estructural (references/protocols-advanced.md)
 Diagnostica necesidades de recursos (references, scripts, assets) y los genera automáticamente tras el Paso 4 (Artefacto) si la skill lo requiere.
 
-### Protocolo de Generalización
+### Protocolo de Generalización (references/protocols-core.md)
 Diagnostica problemas antes de modificar:
 - Instrucción ambigua → reubicar
 - Instrucciones compiten → eliminar contradicción
 - Overfitting → generalizar principio
 - 2 fallos → cambio de metáfora
 
-### Análisis de Ejecutabilidad
+### Análisis de Ejecutabilidad (references/protocols-core.md)
 4 preguntas para cada instrucción:
 1. ¿Es autónoma?
 2. ¿Existe criterio de terminación?
 3. ¿Hay instrucciones que compiten?
 4. ¿Son demasiado específicas (narrow)?
 
-### Comparación A/B (sin ejecución)
+### Comparación A/B (sin ejecución) (references/protocols-core.md)
 Evalúa Alpha vs Beta con rúbrica ciega de contenido y estructura, calcula score ponderado y declara ganadora.
 
-### Trigger Optimization (Optimización de Descripción)
+### Trigger Optimization (Optimización de Descripción) (references/protocols-core.md)
 Genera 10 queries de prueba (5 que deben disparar, 5 que no), evalúa la descripción actual y reescribe para maximizar activación correcta.
 
-### Metacrítica de Expectations
+### Metacrítica de Expectations (references/protocols-core.md)
 Detecta expectations débiles (triviales o no discriminantes) y las fortalece con thresholds cuantificables.
 
-### S3: Catálogo de Scripts por Dominio
+### S3: Catálogo de Scripts por Dominio (references/protocols-advanced.md)
 Evalúa si la skill requiere scripts típicos (validación, procesamiento, API, reportes) y genera esqueletos con docstring y argparse.
 
-### S4: Generación de Plantillas
+### S4: Generación de Plantillas (references/protocols-advanced.md)
 Genera `assets/template.[ext]` con placeholders `{{ campo }}` para outputs de estructura fija.
 
-### S6: Autoevaluación
+### S6: Autoevaluación (references/protocols-advanced.md)
 La skill audita su propio SKILL.md contra los 5 criterios formales y propone correcciones.
 
-### S7: Ciclo de Automejoramiento
+### S7: Ciclo de Automejoramiento (references/protocols-advanced.md)
 Tras autoevaluación, propone cambios quirúrgicos (máximo 2 por ciclo) y solicita aprobación antes de aplicar.
 
-### S8: Protocolo de Actualización de Estándar
+### S8: Protocolo de Actualización de Estándar (references/protocols-advanced.md)
 Gestiona cambios en el formato SKILL.md: actualiza plantillas, validadores, ejemplos y registra en `data/knowledge-log.md`.
 
-### S9: Modo Migración
+### S9: Modo Migración (references/protocols-advanced.md)
 Convierte prompts informales, Actions de GPT o configuraciones de Gemini al estándar SKILL.md.
 
-### S12: Modo Suite de Skills
+### S12: Modo Suite de Skills (references/protocols-advanced.md)
 Diseña múltiples skills relacionadas con orquestación y recursos compartidos.
 
 ---
@@ -255,6 +259,8 @@ Diseña múltiples skills relacionadas con orquestación y recursos compartidos.
 | 2.4.0 | 2025-05-26 | Mejoras v2.4.0 (scripts, auditoría) |
 | 3.0.0 | 2026-04-26 | Mejoras v3.0.0 (protocolos avanzados, post-evaluación senior) |
 | 4.0.0 | 2026-04-27 | Editor estructural completo: enriquecimiento (S1), autoevaluación (S6), migración (S9), evals (S10), knowledge log, suite de skills (S12) |
+| 4.1.0 | 2026-04-28 | Correcciones de producción: orden auditoría+mejora (P1), visibilidad S1 (P2), rúbrica código (P3), historial siempre (P4), trigger knowledge-log (P5) |
+| 5.0.0 | 2026-04-28 | Refactoring estructural: task.md reducido a ~200 líneas, protocolos movidos a references/protocols-advanced.md y protocols-core.md |
 
 ---
 
@@ -276,12 +282,12 @@ Diseña múltiples skills relacionadas con orquestación y recursos compartidos.
 
 ```
 meta-skill-architect/
-├── SKILL.md                   # Instalable (v4.0.0)
-├── system.md                 # Identidad y reglas invariantes (v4.0.0)
-├── task.md                   # Instrucciones operativas y protocolos (v4.0.0)
+├── SKILL.md                   # Instalable (v5.0.0)
+├── system.md                 # Identidad y reglas invariantes (v5.0.0)
+├── task.md                   # Instrucciones operativas y punto de entrada (v5.0.0, ~200 líneas)
 ├── assets/
-│   ├── template-full.md       # Plantilla completa
-│   └── template-minimal.md  # Plantilla mínima
+│   ├── template-full.md       # Plantilla completa (>4000 tokens)
+│   └── template-minimal.md  # Plantilla mínima (<4000 tokens)
 ├── scripts/
 │   ├── validate.sh          # Validador seguridad (Capa 2)
 │   ├── validate_structure.py # Validador estructura YAML (10+ checks)
@@ -298,9 +304,11 @@ meta-skill-architect/
 │       ├── missing-rubrica.md
 │       └── short-errors.md
 ├── references/
-│   ├── schemas.md          # 6 esquemas JSON
-│   ├── writing-patterns.md  # 7 patrones de escritura
-│   └── examples.md         # 7 ejemplos canónicos
+│   ├── schemas.md              # 6 esquemas JSON
+│   ├── writing-patterns.md    # 7 patrones de escritura
+│   ├── examples.md           # 7 ejemplos canónicos
+│   ├── protocols-advanced.md # S1, S3, S4, S6, S7, S8, S9, S10, S12 (v5.0.0)
+│   └── protocols-core.md      # Generalización, Ejecutabilidad, A/B, Trigger Opt, Metacrítica (v5.0.0)
 └── README.md
 ```
 

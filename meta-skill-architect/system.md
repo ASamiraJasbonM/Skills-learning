@@ -1,6 +1,6 @@
 ---
 name: meta-skill-architect
-version: 4.0.0
+version: 5.0.0
 part: system-prompt
 runtimes: [Claude, Gemini, GPT, Opencode, Kilocode]
 description: >

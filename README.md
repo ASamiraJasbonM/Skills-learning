@@ -24,21 +24,30 @@ Colección de skills instalables para agentes IA (OpenCode, Claude, etc.)
 - **Instalar:** `npx skills add ASamiraJasbonM/Skills-learning --skill architecture-diagram-architect`
 - **Versión:** 1.0.0
 
-### 5. Git Master Architect
+### 5. Conservative Dev Protocol
+- **Descripción:** Protocolo de "Mínima Intervención". Evita cambios destructivos, protege archivos existentes y garantiza trazabilidad mediante bitácoras.
+- **Instalar:** `npx skills add ASamiraJasbonM/Skills-learning --skill conservative-dev-protocol`
+- **Versión:** 1.0.0
+
+### 6. Git Master Architect
 - **Descripción:** Experto en Git para analizar cambios, redactar commits descriptivos y gestionar flujos de trabajo con branches y rebases.
 - **Instalar:** `npx skills add ASamiraJasbonM/Skills-learning --skill git-master-architect`
 - **Versión:** 1.0.0
 
-### 6. MCP Python Architect
+### 7. ML Data Cleaner
+- **Descripción:** Experto en preparación de datos para ML. Realiza Data Understanding, EDA, limpieza técnica y generación de reportes de calidad.
+- **Instalar:** `npx skills add ASamiraJasbonM/Skills-learning --skill ml-data-cleaner`
+- **Versión:** 1.0.0
+
+### 8. MCP Python Architect
 - **Descripción:** Diseña y construye servidores Model Context Protocol (MCP) robustos en Python con validación Pydantic.
 - **Instalar:** `npx skills add ASamiraJasbonM/Skills-learning --skill mcp-python-architect`
 - **Versión:** 1.1.0
 
-### 7. Meta-Skill Architect
+### 9. Meta-Skill Architect
 - **Descripción:** Sistema de ingeniería de prompts para diseñar, auditar y mejorar skills SKILL.md para agentes IA.
 - **Instalar:** `npx skills add ASamiraJasbonM/Skills-learning --skill meta-skill-architect`
 - **Versión:** 3.0.0
-- **Última actualización:** 2026-04-26 (post-evaluación senior)
 
 ---
 
@@ -70,13 +79,15 @@ cp -r Skills-learning/<skill-name> ~/.config/opencode/skills/
 
 ```
 Skills-learning/
-├── code-analysis/          # Code analysis skill
-├── django-shield/         # Django security audit
-├── fastapi-shield/        # FastAPI security audit
-├── architecture-diagram-architect/  # Diagram generation
-├── git-master-architect/  # Git expertise
-├── mcp-python-architect/ # MCP server builder
-├── meta-skill-architect/  # SKILL.md architect
+├── code-analysis/                  # Code analysis skill
+├── django-shield/               # Django security audit
+├── fastapi-shield/              # FastAPI security audit
+├── architecture-diagram-architect/   # Diagram generation
+├── conservative-dev-protocol/    # Safe development protocol
+├── git-master-architect/        # Git expertise
+├── ml-data-cleaner/             # ML data preparation
+├── mcp-python-architect/       # MCP server builder
+├── meta-skill-architect/      # SKILL.md architect
 └── README.md
 ```
 
@@ -87,7 +98,8 @@ Skills-learning/
 | Dominio | Skills |
 |--------|-------|
 | **Seguridad** | django-shield, fastapi-shield |
-| **Ingeniería de Código** | code-analysis, mcp-python-architect |
+| **Ingeniería de Código** | code-analysis, mcp-python-architect, conservative-dev-protocol |
+| **Data Science** | ml-data-cleaner |
 | **Arquitectura** | architecture-diagram-architect |
 | **DevOps** | git-master-architect |
 | **Diseño de Skills** | meta-skill-architect |

@@ -26,32 +26,32 @@ Actúa como un Ingeniero de Datos senior. Tu misión es transformar un dataset c
 
 ## Instrucciones Operativas
 
+### 0. Validación de Entorno (S1)
+Antes de procesar datos, ejecutar `python scripts/check_env.py`. Si el entorno falla, notificar al usuario y detener la ejecución. 
+*Opcional:* Para pruebas de humo, usar `python assets/sample_data.py` para generar un dataset de test.
+
 ### 1. Fase de Entendimiento (Data Understanding)
 Antes de limpiar, debes ejecutar un diagnóstico profundo:
 - **Inspección:** `.info()`, `.head()`, `.isnull().sum()`.
 - **Perfilado:** `.describe()` comparando media vs. mediana para detectar sesgos.
 - **Outliers:** Identificación mediante rangos intercuartílicos (IQR).
 
-### 2. Ciclo de Ejecución (Gemini/Kilocode)
+### 2. Ciclo de Ejecución
 
 #### Paso A: Generación de EDA (Visual & Stats)
-Produce un script `eda_report.py` que genere:
-- Histogramas de distribución para variables numéricas.
-- Countplots para variables categóricas.
-- Mapa de calor de correlaciones (`sns.heatmap`).
-- Reporte `ANALYSIS.md` con los hallazgos de calidad.
+Produce un script `eda_report.py` que genere visualizaciones de distribución y correlación.
+Simultáneamente, completa el reporte `ANALYSIS.md` usando la estructura de `assets/analysis_template.md`.
 
 #### Paso B: Limpieza y Preprocesamiento
 Genera un script `clean_data.py` que realice:
-- **Tratamiento de Nulos:** Imputación inteligente (SimpleImputer o KNN).
-- **Encoding:** OneHot o LabelEncoding según la cardinalidad.
-- **Escalado:** StandardScaler o MinMaxScaler si hay sensibilidad a la magnitud.
+- **Split Inicial:** Separar Train/Test antes de calcular estadísticas para evitar fuga.
+- **Tratamiento de Nulos:** Imputación inteligente.
+- **Encoding y Escalado:** Transformaciones reproducibles.
 
 ### 3. Formato de Salida
-Por cada dataset, el agente debe entregar:
-1. `eda_report.py`: Script de visualización y diagnóstico.
-2. `clean_data.py`: Pipeline de transformación reproducible.
-3. `ANALYSIS.md`: Resumen ejecutivo de la calidad de los datos y cambios realizados.
+1. `eda_report.py`: Diagnóstico visual.
+2. `clean_data.py`: Pipeline reproducible.
+3. `ANALYSIS.md`: Basado en `assets/analysis_template.md`.
 
 ## Manejo de Errores
 

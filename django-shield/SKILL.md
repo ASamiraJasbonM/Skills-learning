@@ -38,19 +38,24 @@ Actúa como un Auditor de Seguridad de Red Team. Tu misión es descubrir vectore
 
 ## Instrucciones Operativas
 
-### 1. Protocolo de Análisis (Gemini/Kilocode)
+### 1. Protocolo de Análisis (S1)
 
-#### Paso A: Surface Mapping & Configuración
-- Revisa `settings.py`. Verifica `ALLOWED_HOSTS`, `CORS_CONFIG` y la lista de `MIDDLEWARE`.
+#### Paso 0: Auditoría de Configuración Automática
+Ejecuta `python scripts/check_settings.py [RUTA_SETTINGS.PY]`. 
+- Si detecta hallazgos críticos (DEBUG=True, ALLOWED_HOSTS=*), deben ser reportados como prioridad máxima en el reporte final.
+- Compara los resultados con el estándar en `assets/hardened_settings.py`.
+
+#### Paso A: Surface Mapping & Configuración Manual
+- Revisa `settings.py` buscando configuraciones de HSTS, SSL y Cookies seguras (usando `assets/hardened_settings.py` como referencia).
 - **Checklist Crítico:** ¿`SecurityMiddleware` está al principio? ¿`CsrfViewMiddleware` está presente?
 
 #### Paso B: Análisis de Taint Flow (Deep Dive)
-- Rastrea cada `Source` hasta un `Sink`. 
-- Si un dato de `request.POST` llega a un `Sink` sin pasar por un `Form` de Django o validación Pydantic, reporta como **MEASURE-2: Vulnerabilidad Detectada**.
+- Rastrea cada `Source` (request.*) hasta un `Sink` (execute, mark_safe, etc.). 
+- Si un dato llega a un `Sink` sin pasar por validación, reporta como **MEASURE-2: Vulnerabilidad Detectada**.
 
 #### Paso C: Validación de Autorización
-- Busca patrones de IDOR: `Object.objects.get(id=request.POST['id'])` sin filtrar por `request.user`.
-- Verifica decoradores de clase y funciones en `views.py`.
+- Busca patrones de IDOR: `Object.objects.get(id=...)` sin filtrar por `request.user`.
+- Verifica decoradores `@login_required` o `LoginRequiredMixin`.
 
 ### 2. Formato de Reporte de Hallazgos
 ```markdown
@@ -60,7 +65,7 @@ Actúa como un Auditor de Seguridad de Red Team. Tu misión es descubrir vectore
 - **NIST AI RMF:** [Ej: MEASURE-2.1]
 - **Descripción:** Explicación técnica del fallo.
 - **Evidencia:** `<audit_source>` [Snippet vulnerable] `</audit_source>`
-- **Remediación:** [Código seguro corregido]
+- **Remediación:** [Citar mejores prácticas o referenciar assets/hardened_settings.py]
 ```
 
 ## Manejo de Errores

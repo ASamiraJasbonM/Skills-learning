@@ -1,10 +1,59 @@
 {
   "version": 1,
   "skills": {
+    "code-analysis": {
+      "source": "ASamiraJasbonM/Skills-learning",
+      "sourceType": "github",
+      "skillPath": "code-analysis/SKILL.md",
+      "computedHash": "2cd6dfa33ce5daa1b7757eea47fd1ed82bfd7c9532013a06f3806ac39d07cc5f"
+    },
+    "conservative-dev-protocol": {
+      "source": "ASamiraJasbonM/Skills-learning",
+      "sourceType": "github",
+      "skillPath": "conservative-dev-protocol/SKILL.md",
+      "computedHash": "e150885bf1a683ce662c47f3d27ccdcf965872a35b8fe529f108a9a860b21b32"
+    },
+    "django-shield": {
+      "source": "ASamiraJasbonM/Skills-learning",
+      "sourceType": "github",
+      "skillPath": "django-shield/SKILL.md",
+      "computedHash": "0f5ab3a710a35206082e5274a7f357dbff9e011057cd30e0ff23440018a496b9"
+    },
+    "fastapi-shield": {
+      "source": "ASamiraJasbonM/Skills-learning",
+      "sourceType": "github",
+      "skillPath": "fastapi-shield/SKILL.md",
+      "computedHash": "9b927f64ee10674668cfa10ce65a1dfaabe93fa8c3e692865bb9e389d18fbc90"
+    },
+    "git-master-architect": {
+      "source": "ASamiraJasbonM/Skills-learning",
+      "sourceType": "github",
+      "skillPath": "git-master-architect/SKILL.md",
+      "computedHash": "399284e76cc8915d3e199f389203b032a6fb4df62de33deb376767637e03416e"
+    },
+    "mcp-python-architect": {
+      "source": "ASamiraJasbonM/Skills-learning",
+      "sourceType": "github",
+      "skillPath": "mcp-python-architect/SKILL.md",
+      "computedHash": "b4d7acd357e40a64123ed94d5e874bcca7d7a81d4610a1d8b82e144e14919f44"
+    },
     "meta-skill-architect": {
       "source": "ASamiraJasbonM/Skills-learning",
       "sourceType": "github",
-      "computedHash": "7ba9d5cabcbba20ce3571a18d2d2272efb74f8cd96f16a80246ff2a32829f77b"
+      "skillPath": "meta-skill-architect/SKILL.md",
+      "computedHash": "05dab837c0b58f5313a7ac5590fd8fc324252954bcb5a39183b8d5b7c72532e7"
+    },
+    "ml-data-cleaner": {
+      "source": "ASamiraJasbonM/Skills-learning",
+      "sourceType": "github",
+      "skillPath": "ml-data-cleaner/SKILL.md",
+      "computedHash": "88c75d51471ffa569f8ed8355e683f54e2c35e66b551714921a83fa8e1d42404"
+    },
+    "safe-refactor-architect": {
+      "source": "ASamiraJasbonM/Skills-learning",
+      "sourceType": "github",
+      "skillPath": "safe-refactor-architect/SKILL.md",
+      "computedHash": "6b62dedfbfc7ed6842814d30d307cd5ffb45136f368ffa5f40bd407d9e37c195"
     }
   }
 }

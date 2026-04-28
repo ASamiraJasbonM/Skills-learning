@@ -1,5 +1,13 @@
-# <tipo>(<scope>): <descripción corta en minúsculas>
-#
-# Tipos: feat, fix, chore, docs, style, refactor, perf, test
-#
-# Ejemplo: feat(ui): add loading spinner to dashboard
+# <type>(<scope>): <subject>
+# |----|  |-----|    |------|
+#   |        |           |
+#   |        |           +--> Descripción corta en minúsculas y presente.
+#   |        +--------------> Opcional: área afectada (auth, ui, db).
+#   +-----------------------> feat, fix, docs, style, refactor, perf, test, chore.
+
+# [Cuerpo: Opcional]
+# Explica el "qué" y el "por qué", no el "cómo".
+# Usa párrafos separados por líneas vacías.
+
+# [Notas al pie: Opcional]
+# Referencias a tickets (e.g., Fixes #123) o cambios de ruptura (BREAKING CHANGE).

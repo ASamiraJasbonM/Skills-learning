@@ -23,6 +23,8 @@ import os
 import sys
 import argparse
 import re
+import subprocess
+import datetime
 from pathlib import Path
 from dataclasses import dataclass
 
@@ -50,7 +52,7 @@ class EvalFeedback:
     overall: str
 
 
-def detect_weak_expectation(expectation: str, passed: bool) -> dict:
+def detect_weak_expectation(expectation: str, passed: bool) -> dict | None:
     """Detecta expectations débiles: trivialmente verdaderas o falsas."""
     suggestion = None
 
@@ -92,8 +94,6 @@ Responde en formato JSON:
 
     # Try Claude CLI first
     try:
-        import subprocess
-
         result = subprocess.run(
             ["claude", "-p", prompt, "--output-format", "json"],
             capture_output=True,
@@ -255,7 +255,7 @@ def run_evaluations(data_path: Path) -> dict:
     total = total_passed + total_failed
 
     output = {
-        "evaluation_date": "2025-05-26",
+        "evaluation_date": datetime.date.today().isoformat(),
         "total_evals": len(test_cases),
         "results": all_results,
         "summary": {

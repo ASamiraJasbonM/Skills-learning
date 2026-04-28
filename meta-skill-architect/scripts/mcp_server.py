@@ -22,14 +22,14 @@ def get_skill_metadata() -> dict:
     """Return skill metadata."""
     return {
         "name": "meta-skill-architect",
-        "version": "3.0.0",
+        "version": "5.0.0",
         "description": "Meta-Skill Architect for safe operational contract generation",
         "author": "meta-skill-architect",
         "runtimes": ["Claude", "Gemini", "GPT", "Opencode", "Kilocode"],
     }
 
 
-def execute_skill(user_input: str, context: dict = None) -> dict:
+def execute_skill(user_input: str, context: dict | None = None) -> dict:
     """
     Execute the meta-skill-architect skill with user input.
 
@@ -141,7 +141,7 @@ def main():
                 "result": {
                     "event": "ready",
                     "server": "meta-skill-architect_mcp",
-                    "version": "3.0.0",
+                    "version": "5.0.0",
                 },
             }
         ),

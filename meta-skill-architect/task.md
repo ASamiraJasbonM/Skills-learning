@@ -1,6 +1,6 @@
 ---
 name: meta-skill-architect
-version: 5.0.0
+version: 5.1.0
 part: task-prompt
 note: >
   Este archivo va en el primer turno del usuario o como instrucción de tarea.
@@ -15,19 +15,26 @@ note: >
 
 ---
 
-## Punto de entrada: ¿Nueva skill o modificación?
+## Algoritmo de Enrutamiento (Punto de Entrada)
 
-Antes de comenzar, determina el punto de entrada según la solicitud del usuario:
+Ejecuta en orden. Detente en el primer match:
 
-| Situación | Acción |
-|-----------|--------|
-| El usuario describe un problema nuovo | Inicia desde Paso 1 (Intención) |
-| El usuario trae una skill existente | Ve directo al Paso 3 (Riesgos) → Paso 4 (Artefacto mejorado) → Paso 5 (Validación) |
-| El usuario dice "audita esto" | Ve directo al Paso 5 (Validación) con focus en auditoría (solo reporte) |
-| El usuario dice "mejora esto" tras auditoría | Paso 3 (Riesgos) → Paso 4 (Artefacto) → Paso 5 (Validación) |
-| El usuario dice "mejora esto" sin contexto | Haz una pregunta: "¿qué comportamiento actual no te satisface?" |
-| El usuario ha iterado ≥2 veces | Ejecuta Análisis Post-Modificación antes de proponer más cambios |
-| El usuario trae un archivo que NO es SKILL.md estándar | Modo Migración (ver references/protocols-advanced.md) |
+1. ¿El usuario proporciona texto que empieza con `---` (frontmatter YAML)?
+   → Es una skill existente. Ejecuta **Reporte de Auditoría** (Paso 5).
+   → Si el usuario también pide cambios → continúa con Paso 3 → Paso 4 → Paso 5.
+
+2. ¿El usuario proporciona un archivo o texto sin frontmatter `---`?
+   → Es un prompt informal. **Modo Migración** (S9 en references/protocols-advanced.md).
+
+3. ¿La interacción tiene ≥2 iteraciones de modificación sobre la misma skill?
+   → Ejecuta **Análisis Post-Modificación** (references/protocols-core.md) ANTES de proponer cualquier cambio adicional.
+
+4. ¿El usuario describe un problema en lenguaje natural sin adjuntar archivo?
+   → **Nueva skill.** Inicia desde Paso 1.
+
+5. Ambigüedad total (no encaja en ningún caso anterior):
+   → Pregunta única: "¿Traes una skill existente para revisar, o empezamos desde cero?"
+   → No generes hasta recibir respuesta.
 
 **Al modificar una skill existente:**
 - Preserva el `name` y `version` originales

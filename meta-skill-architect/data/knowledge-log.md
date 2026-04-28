@@ -15,6 +15,8 @@
 | P04 | Description con angle brackets | description contiene `< >` | Reemplazar con texto plano, validar en validate_structure | 2026-04-27 |
 | P05 | Frontmatter dependencies como string | dependencies: "a, b, c" en vez de lista YAML | Cambiar a lista YAML, añadir validación | 2026-04-27 |
 | P06 | SKILL.md sobrecargado | >5000 palabras o >500 líneas | Mover documentación estática a references/ | 2026-04-27 |
+| P07 | Versión hardcoded en scripts | mcp_server.py en v3.0.0 cuando skill era v5.0.0 | Sincronizar versión de scripts con SKILL.md en cada release | 2026-04-28 |
+| P08 | Fecha hardcoded en reportes | evaluation_date fija en test_runner.py | Usar datetime.date.today().isoformat() | 2026-04-28 |
 
 ---
 
@@ -48,3 +50,5 @@
 | 2026-04-27 | v3.0.0 → v4.0.0: Editor estructural completo | task.md, SKILL.md, validate_structure.py | ✅ |
 | 2026-04-27 | dependencies como lista YAML | SKILL.md | ✅ |
 | 2026-04-27 | Check de peso en validate_structure.py | validate_structure.py | ✅ |
+| 2026-04-28 | v4.1.0: correcciones producción (P1-P5): orden auditoría+mejora, visibilidad S1, rúbrica código, historial siempre, trigger knowledge-log | task.md, SKILL.md | ✅ |
+| 2026-04-28 | v5.0.0: refactoring estructural — task.md reducido a ~200 líneas, protocolos movidos a references/protocols-advanced.md y protocols-core.md | task.md, references/ | ✅ |

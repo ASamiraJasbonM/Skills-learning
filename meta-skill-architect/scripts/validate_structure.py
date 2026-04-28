@@ -255,6 +255,40 @@ def validate_sections(content: str, is_minima: bool = False) -> tuple[bool, list
     return len(missing) == 0, missing
 
 
+def check_description_body_coherence(
+    content: str, frontmatter: dict
+) -> tuple[bool, str]:
+    """
+    Check semántico básico: palabras clave de la description deben aparecer en el cuerpo.
+    No es un check semántico completo — detecta solo inconsistencias obvias.
+    """
+    description = frontmatter.get("description", "")
+    if not description:
+        return True, ""
+
+    stopwords = {"para", "como", "desde", "hasta", "sobre", "entre", "cuando", "donde"}
+    desc_words = [
+        w.lower()
+        for w in description.split()
+        if len(w) > 5 and w.lower() not in stopwords
+    ]
+
+    body = (
+        "\n".join(content.split("\n")[content.split("\n").index("---", 1) + 1 :])
+        if "---" in content
+        else content
+    )
+    body_lower = body.lower()
+
+    missing = [w for w in desc_words if w not in body_lower]
+    if len(desc_words) > 0 and (len(missing) / len(desc_words)) > 0.6:
+        return False, (
+            f"description menciona términos ausentes en el cuerpo: {missing[:3]}. "
+            "Posible incoherencia description↔cuerpo. Revisar manualmente."
+        )
+    return True, ""
+
+
 def check_skill_md_length(content: str) -> tuple[bool, str]:
     """Detecta SKILL.md sobrecargado — candidato a refactorización."""
     word_count = len(content.split())
@@ -345,6 +379,11 @@ def validate_structure(skill_path: Path, fix: bool = False) -> tuple[bool, list[
     valid, msg = check_skill_md_length(content)
     if not valid:
         errors.append(f"peso: {msg}")
+
+    # Check 11: Coherencia description↔cuerpo (heurístico)
+    valid, msg = check_description_body_coherence(content, frontmatter)
+    if not valid:
+        errors.append(f"coherencia: {msg}")  # Warning, no bloqueante
 
     return len(errors) == 0, errors
 

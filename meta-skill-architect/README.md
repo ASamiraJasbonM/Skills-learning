@@ -2,7 +2,7 @@
 
 Sistema de ingeniería de prompts para diseñar, auditar y mejorar skills SKILL.md para agentes de IA.
 
-| Versión | 5.0.0 |
+| Versión | 5.1.0 |
 |--------|--------|
 | Estado | ACTIVO |
 | Runtimes | Claude, Gemini, GPT, Opencode, Kilocode |
@@ -27,26 +27,38 @@ meta-skill-architect es un **arquitecto autónomo de skills** que genera, audita
 
 ---
 
+## Novedades v5.1.0
+
+- **Rúbrica de ejecutabilidad:** Sustituye "Densidad semántica" por criterio objetivo basado en instrucciones autónomas y análisis de ejecutabilidad (ver `references/protocols-core.md`)
+- **Algoritmo de enrutamiento determinista:** Usa detección de frontmatter (`---`) en lugar de palabras clave léxicas para decidir el flujo de trabajo
+- **Fallback ultra-limitado:** Degradación graceful cuando hay <8k tokens disponibles, con notificación explícita al usuario
+- **Check de coherencia description↔cuerpo:** Nuevo check 11 en `validate_structure.py` para detectar inconsistencias semánticas (heurístico, no bloqueante)
+- **Metadatos MCP corregidos:** `mcp_server.py` ahora reporta versión 5.1.0 (antes 3.0.0)
+- **Fecha dinámica en reportes:** `test_runner.py` usa `datetime.date.today().isoformat()` en lugar de fecha hardcoded
+- **Knowledge-log actualizado:** Registra patrones P07 (versión hardcoded) y P08 (fecha hardcoded)
+
+---
+
 ## Componentes
 
 ### Archivos principales
 
 | Archivo | Propósito |
 |---------|-----------|
-| `system.md` | Identidad, reglas invariantes, constraints MoSCoW, arquitectura de defensa en capas (v5.0.0) |
-| `task.md` | Instrucciones operativas, ciclo de 5 pasos, punto de entrada, plantillas (v5.0.0, ~200 líneas) |
-| `references/protocols-advanced.md` | Protocolos S1, S3, S4, S6, S7, S8, S9, S10, S12 (v5.0.0) |
-| `references/protocols-core.md` | Protocolos Core: Generalización, Ejecutabilidad, A/B, Trigger Opt, Metacrítica (v5.0.0) |
-| `SKILL.md` | Skill instalable (carga system.md + task.md, v5.0.0) |
+| `system.md` | Identidad, reglas invariantes, constraints MoSCoW, arquitectura de defensa en capas (v5.1.0) |
+| `task.md` | Instrucciones operativas, ciclo de 5 pasos, algoritmo de enrutamiento determinista, plantillas (v5.1.0, ~200 líneas) |
+| `references/protocols-advanced.md` | Protocolos S1, S3, S4, S6, S7, S8, S9, S10, S12 (v5.1.0) |
+| `references/protocols-core.md` | Protocolos Core: Generalización, Ejecutabilidad, A/B, Trigger Opt, Metacrítica (v5.1.0) |
+| `SKILL.md` | Skill instalable (carga system.md + task.md, v5.1.0) |
 
 ### Scripts
 
 | Script | Descripción |
 |--------|-------------|
 | `scripts/validate.sh` | Validador de seguridad (Capa 2 de defensa) |
-| `scripts/validate_structure.py` | Validador de estructura YAML (10+ checks: frontmatter, secciones obligatorias, tablas de errores) |
-| `scripts/test_runner.py` | Suite de evaluación LLM-as-a-Judge usando evals de `data/examples.json` |
-| `scripts/mcp_server.py` | Servidor MCP stub para integración (requiere implementar `execute_skill()` con LLM real) |
+| `scripts/validate_structure.py` | Validador de estructura YAML (11 checks: frontmatter, secciones, tablas, coherencia description↔cuerpo) |
+| `scripts/test_runner.py` | Suite de evaluación LLM-as-a-Judge con fecha dinámica (usa `datetime.date.today().isoformat()`) |
+| `scripts/mcp_server.py` | Servidor MCP con versión alineada (v5.1.0) para integración |
 | `scripts/smoke_test.sh` | Smoke test rápido para validar la integridad de la skill |
 
 > **Nota sobre `test_runner.py`:** En modo fallback (sin CLI de Claude Code disponible), los resultados de evaluación NO son confiables. Para evals reales, ejecuta desde Claude Code con `claude -p` disponible. Las evals cuantitativas requieren entorno Claude Code — no presentar como funcionalidad completa en entornos de chat.
@@ -157,19 +169,27 @@ my-skill/
 
 ## Ciclos de operación
 
+### Algoritmo de enrutamiento determinista
+El punto de entrada usa detección de frontmatter (`---`) para decidir el flujo, eliminando ambigüedad léxica:
+1. Frontmatter presente → Skill existente → Auditoría (Paso 5)
+2. Sin frontmatter → Prompt informal → Modo Migración (S9)
+3. ≥2 iteraciones → Análisis Post-Modificación
+4. Lenguaje natural sin archivo → Nueva skill (Paso 1)
+5. Ambigüedad total → Pregunta única al usuario
+
 ### Nueva skill
 ```
-Punto de entrada → Intención → Ambigüedad → Riesgos → Artefacto → Validación
+Intención → Ambigüedad → Riesgos → Artefacto → Validación
 ```
 
 ### Modificación iterativa
 ```
-Punto de entrada → Riesgos → Validación → Mejoras → Historial de cambios
+Riesgos → Validación → Mejoras → Historial de cambios
 ```
 
 ### Auditoría
 ```
-Punto de entrada → Reporte estructurado (5 criterios formales + claims implícitos)
+Reporte estructurado (5 criterios formales + claims implícitos)
 ```
 
 ### Iteración (≥2)
@@ -199,7 +219,7 @@ Lectura de rúbrica/errores/riesgos → Generación de 4-8 evals → Metacrític
 
 ---
 
-## Protocolos avanzados (v5.0.0)
+## Protocolos avanzados (v5.1.0)
 
 ### S1: Enriquecimiento Estructural (references/protocols-advanced.md)
 Diagnostica necesidades de recursos (references, scripts, assets) y los genera automáticamente tras el Paso 4 (Artefacto) si la skill lo requiere.
@@ -261,12 +281,13 @@ Diseña múltiples skills relacionadas con orquestación y recursos compartidos.
 | 4.0.0 | 2026-04-27 | Editor estructural completo: enriquecimiento (S1), autoevaluación (S6), migración (S9), evals (S10), knowledge log, suite de skills (S12) |
 | 4.1.0 | 2026-04-28 | Correcciones de producción: orden auditoría+mejora (P1), visibilidad S1 (P2), rúbrica código (P3), historial siempre (P4), trigger knowledge-log (P5) |
 | 5.0.0 | 2026-04-28 | Refactoring estructural: task.md reducido a ~200 líneas, protocolos movidos a references/protocols-advanced.md y protocols-core.md |
+| 5.1.0 | 2026-04-28 | C1: Rúbrica ejecutabilidad; C2: Algoritmo enrutamiento determinista; C3: Fallback ultra-limitado; C4: Check coherencia description↔cuerpo; C5: Versión MCP 5.0.0; C6: Fecha dinámica test_runner; C7: knowledge-log actualizado |
 
 ---
 
 ## Comparación con skill-creator
 
-| Aspecto | skill-creator | meta-skill-architect v4.0.0 |
+| Aspecto | skill-creator | meta-skill-architect v5.1.0 |
 |---------|--------------|-------------------|
 | Requiere Claude Code | ✅ | ❌ (funciona en chat) |
 | Patrones escritura | Implícitos | **Explícitos (7)** |
@@ -282,21 +303,21 @@ Diseña múltiples skills relacionadas con orquestación y recursos compartidos.
 
 ```
 meta-skill-architect/
-├── SKILL.md                   # Instalable (v5.0.0)
-├── system.md                 # Identidad y reglas invariantes (v5.0.0)
-├── task.md                   # Instrucciones operativas y punto de entrada (v5.0.0, ~200 líneas)
+├── SKILL.md                   # Instalable (v5.1.0)
+├── system.md                 # Identidad y reglas invariantes (v5.1.0)
+├── task.md                   # Instrucciones operativas, algoritmo enrutamiento, plantillas (v5.1.0, ~200 líneas)
 ├── assets/
 │   ├── template-full.md       # Plantilla completa (>4000 tokens)
 │   └── template-minimal.md  # Plantilla mínima (<4000 tokens)
 ├── scripts/
 │   ├── validate.sh          # Validador seguridad (Capa 2)
-│   ├── validate_structure.py # Validador estructura YAML (10+ checks)
-│   ├── test_runner.py        # Suite de evaluación LLM-as-a-Judge
-│   ├── mcp_server.py        # Servidor MCP stub
+│   ├── validate_structure.py # Validador estructura YAML (11 checks: coherencia description↔cuerpo)
+│   ├── test_runner.py        # Suite de evaluación LLM-as-a-Judge (fecha dinámica)
+│   ├── mcp_server.py        # Servidor MCP con versión alineada (v5.1.0)
 │   └── smoke_test.sh        # Smoke test
 ├── data/
 │   ├── examples.json        # 8 evals con 28 expectations
-│   ├── knowledge-log.md     # Registro de patrones de fallo y soluciones
+│   ├── knowledge-log.md     # Registro de patrones de fallo y soluciones (P07, P08 añadidos)
 │   └── validate_fixtures/  # 5 fixtures para validación
 │       ├── valid-full.md
 │       ├── valid-minimal.md
@@ -307,8 +328,8 @@ meta-skill-architect/
 │   ├── schemas.md              # 6 esquemas JSON
 │   ├── writing-patterns.md    # 7 patrones de escritura
 │   ├── examples.md           # 7 ejemplos canónicos
-│   ├── protocols-advanced.md # S1, S3, S4, S6, S7, S8, S9, S10, S12 (v5.0.0)
-│   └── protocols-core.md      # Generalización, Ejecutabilidad, A/B, Trigger Opt, Metacrítica (v5.0.0)
+│   ├── protocols-advanced.md # S1, S3, S4, S6, S7, S8, S9, S10, S12 (v5.1.0)
+│   └── protocols-core.md      # Generalización, Ejecutabilidad, A/B, Trigger Opt, Metacrítica (v5.1.0)
 └── README.md
 ```
 

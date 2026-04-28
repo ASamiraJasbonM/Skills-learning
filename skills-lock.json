@@ -17,19 +17,19 @@
       "source": "ASamiraJasbonM/Skills-learning",
       "sourceType": "github",
       "skillPath": "django-shield/SKILL.md",
-      "computedHash": "0f5ab3a710a35206082e5274a7f357dbff9e011057cd30e0ff23440018a496b9"
+      "computedHash": "825321a99f34395287d0020ef96a80151be4f33262dcdb28ef1b025ffe3693fe"
     },
     "fastapi-shield": {
       "source": "ASamiraJasbonM/Skills-learning",
       "sourceType": "github",
       "skillPath": "fastapi-shield/SKILL.md",
-      "computedHash": "9b927f64ee10674668cfa10ce65a1dfaabe93fa8c3e692865bb9e389d18fbc90"
+      "computedHash": "52fa91467c7b67204794ff1d0fdcc06f9360121fa8c1171c7e6b0823af8bbf62"
     },
     "git-master-architect": {
       "source": "ASamiraJasbonM/Skills-learning",
       "sourceType": "github",
       "skillPath": "git-master-architect/SKILL.md",
-      "computedHash": "399284e76cc8915d3e199f389203b032a6fb4df62de33deb376767637e03416e"
+      "computedHash": "2ad465d1669a8131f252c3f4df186d85b1fa8925b15b9764cfe6ad84ff1b04a8"
     },
     "mcp-python-architect": {
       "source": "ASamiraJasbonM/Skills-learning",
@@ -41,19 +41,19 @@
       "source": "ASamiraJasbonM/Skills-learning",
       "sourceType": "github",
       "skillPath": "meta-skill-architect/SKILL.md",
-      "computedHash": "05dab837c0b58f5313a7ac5590fd8fc324252954bcb5a39183b8d5b7c72532e7"
+      "computedHash": "ed4846b1edb4612e6ef759c41ee3c48876d620a3b3f99090b4d42c9356bb7594"
     },
     "ml-data-cleaner": {
       "source": "ASamiraJasbonM/Skills-learning",
       "sourceType": "github",
       "skillPath": "ml-data-cleaner/SKILL.md",
-      "computedHash": "88c75d51471ffa569f8ed8355e683f54e2c35e66b551714921a83fa8e1d42404"
+      "computedHash": "b156a19af2c635c6a832f564e483349661f56dacecba672c2452da067e4fd7b5"
     },
     "safe-refactor-architect": {
       "source": "ASamiraJasbonM/Skills-learning",
       "sourceType": "github",
       "skillPath": "safe-refactor-architect/SKILL.md",
-      "computedHash": "6b62dedfbfc7ed6842814d30d307cd5ffb45136f368ffa5f40bd407d9e37c195"
+      "computedHash": "fcc413ac6500527dc7128a4ab2075bb68d8a66a069cf39962683ef2c271130db"
     }
   }
 }

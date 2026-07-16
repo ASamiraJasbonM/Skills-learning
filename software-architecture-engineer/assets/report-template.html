@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="generator" content="software-architecture-engineer v1.1.0">
+<title>Reporte de Dimensionamiento — {{PROJECT_NAME}}</title>
+<style>
+  /* ── Reset y tipografía ── */
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    color: #1a1a2e;
+    line-height: 1.6;
+    max-width: 210mm;
+    margin: 0 auto;
+    padding: 20mm 15mm;
+    font-size: 11pt;
+  }
+
+  /* ── Portada ── */
+  .cover {
+    page-break-after: always;
+    text-align: center;
+    padding-top: 60mm;
+  }
+  .cover h1 {
+    font-size: 28pt;
+    color: #0078d4;
+    margin-bottom: 12pt;
+    letter-spacing: -0.5pt;
+  }
+  .cover .subtitle {
+    font-size: 16pt;
+    color: #444;
+    margin-bottom: 24pt;
+  }
+  .cover .meta {
+    font-size: 10pt;
+    color: #888;
+    margin-top: 40pt;
+  }
+  .cover .meta span {
+    display: block;
+    margin: 4pt 0;
+  }
+
+  /* ── Encabezados ── */
+  h2 {
+    font-size: 18pt;
+    color: #0078d4;
+    border-bottom: 2px solid #0078d4;
+    padding-bottom: 4pt;
+    margin-top: 24pt;
+    margin-bottom: 12pt;
+    page-break-after: avoid;
+  }
+  h3 {
+    font-size: 13pt;
+    color: #333;
+    margin-top: 16pt;
+    margin-bottom: 8pt;
+    page-break-after: avoid;
+  }
+
+  /* ── Tablas ── */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 10pt 0 16pt;
+    page-break-inside: avoid;
+    font-size: 9.5pt;
+  }
+  th {
+    background: #0078d4;
+    color: #fff;
+    text-align: left;
+    padding: 6pt 8pt;
+    font-weight: 600;
+  }
+  td {
+    border: 1px solid #ddd;
+    padding: 5pt 8pt;
+  }
+  tr:nth-child(even) td {
+    background: #f5f8fc;
+  }
+
+  /* ── Métricas destacadas ── */
+  .metric-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8pt;
+    margin: 10pt 0 16pt;
+    page-break-inside: avoid;
+  }
+  .metric-card {
+    border: 1px solid #ddd;
+    border-left: 4px solid #0078d4;
+    padding: 8pt 10pt;
+    background: #fafafa;
+  }
+  .metric-card .label {
+    font-size: 8pt;
+    color: #888;
+    text-transform: uppercase;
+    letter-spacing: 0.5pt;
+  }
+  .metric-card .value {
+    font-size: 14pt;
+    font-weight: 700;
+    color: #1a1a2e;
+  }
+
+  /* ── Listas ── */
+  ul { margin: 8pt 0 12pt 20pt; }
+  li { margin-bottom: 4pt; }
+
+  /* ── Alertas ── */
+  .alert {
+    border-left: 4px solid #d32f2f;
+    background: #fdecea;
+    padding: 8pt 10pt;
+    margin: 10pt 0 16pt;
+    font-size: 9.5pt;
+    page-break-inside: avoid;
+  }
+  .alert.warn {
+    border-left-color: #f57c00;
+    background: #fff3e0;
+  }
+  .alert.info {
+    border-left-color: #0288d1;
+    background: #e3f2fd;
+  }
+
+  /* ── Footer ── */
+  .footer {
+    margin-top: 30pt;
+    padding-top: 10pt;
+    border-top: 1px solid #ddd;
+    font-size: 8pt;
+    color: #999;
+    text-align: center;
+  }
+
+  /* ── Print ── */
+  @page {
+    size: A4;
+    margin: 15mm;
+    @bottom-center {
+      content: "Página " counter(page) " de " counter(pages);
+      font-size: 8pt;
+      color: #999;
+    }
+  }
+  @media print {
+    body { padding: 0; }
+    h2 { page-break-before: always; }
+    h2:first-of-type { page-break-before: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ═══════════ PORTADA ═══════════ -->
+<div class="cover">
+  <h1>{{PROJECT_NAME}}</h1>
+  <p class="subtitle">Reporte de Dimensionamiento de Infraestructura<br>Django + Capacitor + PostgreSQL en Microsoft Azure</p>
+  <div class="meta">
+    <span>Generado: {{DATE}}</span>
+    <span>Skill: software-architecture-engineer v1.1.0</span>
+  </div>
+</div>
+
+<!-- ═══════════ 1. REQUERIMIENTOS EXTRAÍDOS ═══════════ -->
+<h2>1. Requerimientos Extraídos</h2>
+<table>
+  <tr><th>Parámetro</th><th>Valor</th></tr>
+  <tr><td>Usuarios activos</td><td>{{USERS}}</td></tr>
+  <tr><td>Transacciones / día / usuario</td><td>{{TX_PER_DAY}}</td></tr>
+  <tr><td>Entidades principales</td><td>{{ENTITIES}}</td></tr>
+  <tr><td>Tipo de aplicación</td><td>{{APP_TYPE}}</td></tr>
+  <tr><td>Horizonte de proyección</td><td>{{YEARS}} años</td></tr>
+</table>
+
+<!-- ═══════════ 2. SERVICIOS AZURE ═══════════ -->
+<h2>2. Servicios Azure Recomendados</h2>
+<table>
+  <tr><th>Capa</th><th>Servicio</th><th>SKU</th><th>Justificación</th></tr>
+  <tr>
+    <td><strong>Frontend</strong></td>
+    <td>{{FRONTEND_SERVICE}}</td>
+    <td>{{FRONTEND_SKU}}</td>
+    <td>{{FRONTEND_JUSTIFICATION}}</td>
+  </tr>
+  <tr>
+    <td><strong>Backend</strong></td>
+    <td>{{BACKEND_SERVICE}}</td>
+    <td>{{BACKEND_SKU}}</td>
+    <td>{{BACKEND_JUSTIFICATION}}</td>
+  </tr>
+  <tr>
+    <td><strong>Base de datos</strong></td>
+    <td>{{DB_SERVICE}}</td>
+    <td>{{DB_SKU}}</td>
+    <td>{{DB_JUSTIFICATION}}</td>
+  </tr>
+  <tr>
+    <td><strong>Almacenamiento</strong></td>
+    <td>{{STORAGE_SERVICE}}</td>
+    <td>{{STORAGE_SKU}}</td>
+    <td>{{STORAGE_JUSTIFICATION}}</td>
+  </tr>
+</table>
+
+<!-- ═══════════ 3. ESTIMACIÓN DE ALMACENAMIENTO ═══════════ -->
+<h2>3. Estimación de Almacenamiento</h2>
+
+<div class="metric-grid">
+  <div class="metric-card">
+    <div class="label">Datos de Perfil</div>
+    <div class="value">{{CORE_MB}} MB</div>
+  </div>
+  <div class="metric-card">
+    <div class="label">Transacciones Acumuladas</div>
+    <div class="value">{{TXN_GB}} GB</div>
+  </div>
+  <div class="metric-card">
+    <div class="label">Total con Índices y Buffer</div>
+    <div class="value">{{TOTAL_GB}} GB</div>
+  </div>
+  <div class="metric-card">
+    <div class="label">Categoría de Capacidad</div>
+    <div class="value">{{CAPACITY_CATEGORY}}</div>
+  </div>
+</div>
+
+<h3>Estrategia de Esquema</h3>
+<p>{{SCHEMA_STRATEGY}}</p>
+
+<p><strong>Complejidad:</strong> {{COMPLEXITY}}</p>
+
+<!-- ═══════════ 4. ESTIMACIÓN DE CÓMPUTO ═══════════ -->
+<h2>4. Estimación de Cómputo</h2>
+
+<div class="metric-grid">
+  <div class="metric-card">
+    <div class="label">Workers Gunicorn</div>
+    <div class="value">{{WORKERS}}</div>
+  </div>
+  <div class="metric-card">
+    <div class="label">Tipo de Worker</div>
+    <div class="value">{{WORKER_TYPE}}</div>
+  </div>
+  <div class="metric-card">
+    <div class="label">QPS Estimado</div>
+    <div class="value">{{QPS}}</div>
+  </div>
+  <div class="metric-card">
+    <div class="label">Utilización (ρ)</div>
+    <div class="value">{{RHO}}</div>
+  </div>
+  <div class="metric-card">
+    <div class="label">Longitud de Cola (Lq)</div>
+    <div class="value">{{QUEUE_LENGTH}}</div>
+  </div>
+</div>
+
+<!-- ═══════════ 5. CONFIGURACIÓN DE CONEXIONES ═══════════ -->
+<h2>5. Configuración de Conexiones</h2>
+<table>
+  <tr><th>Parámetro</th><th>Valor</th></tr>
+  <tr><td>PgBouncer</td><td>{{PGBOUNCER}}</td></tr>
+  <tr><td>Puerto</td><td>{{PORT}}</td></tr>
+  <tr><td>DISABLE_SERVER_SIDE_CURSORS</td><td>{{DISABLE_CURSORS}}</td></tr>
+  <tr><td>Conexiones físicas máximas</td><td>{{MAX_CONNECTIONS}}</td></tr>
+</table>
+
+<!-- ═══════════ 6. ALERTAS Y MONITOREO ═══════════ -->
+<h2>6. Alertas y Monitoreo</h2>
+<table>
+  <tr><th>Métrica</th><th>Umbral</th><th>Acción</th></tr>
+  <tr><td>Storage utilizado</td><td>{{STORAGE_ALERT}}</td><td>Escalar manualmente</td></tr>
+  <tr><td>Conexiones activas</td><td>{{CONNECTION_ALERT}}% del máximo</td><td>Investigar leak de conexiones</td></tr>
+  <tr><td>CPU App Service</td><td>{{CPU_ALERT}}</td><td>Escalar horizontalmente</td></tr>
+</table>
+
+<!-- ═══════════ NOTAS ═══════════ -->
+{{#CRITICAL_NOTE}}
+<div class="alert">
+  <strong>⚠ Precaución crítica:</strong> {{CRITICAL_NOTE}}
+</div>
+{{/CRITICAL_NOTE}}
+
+{{#RECOMMENDATIONS}}
+<h2>7. Recomendaciones Adicionales</h2>
+<ul>
+  {{RECOMMENDATIONS}}
+</ul>
+{{/RECOMMENDATIONS}}
+
+<!-- ═══════════ FOOTER ═══════════ -->
+<div class="footer">
+  Reporte generado por software-architecture-engineer — {{DATE}}<br>
+  Este documento es una estimación técnica. Validar contra Azure Pricing Calculator antes de aprovisionar.
+</div>
+
+</body>
+</html>

@@ -66,6 +66,12 @@
       "sourceType": "local",
       "skillPath": "phaser-background-manager/SKILL.md",
       "computedHash": "10ec90870ba5a98b5b9ee2163de56071b7713acca7d3224429492b80455f22bf"
+    },
+    "phaser-entity-manager": {
+      "source": "local",
+      "sourceType": "local",
+      "skillPath": "phaser-entity-manager/SKILL.md",
+      "computedHash": "5c108145d782072737bf8eb5b9c100e5da72559be177c2535e329c40b12a4c78"
     }
   }
 }

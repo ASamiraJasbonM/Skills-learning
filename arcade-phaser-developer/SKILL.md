@@ -1,7 +1,7 @@
 ---
 name: arcade-phaser-developer
 version: 1.3.0
-platform: [Opencode, Claude]
+platform: Opencode, Claude
 domain: arcade-game-dev
 dependencies: phaser@3.90+
 ---

@@ -1,9 +1,14 @@
 ---
 name: arcade-phaser-developer
 version: 1.3.0
-platform: [Opencode, Claude]
+platform: Opencode, Claude
 domain: arcade-game-dev
 dependencies: phaser@3.90+
+description: >
+  Genera scripts de videojuegos arcade con Phaser 3 y JavaScript/TypeScript moderno. 
+  Produce código modular, de alto rendimiento, orientado a arquitectura web y optimizado 
+  para hackathones (sin assets externos, peso reducido, escalado automático para pantallas 
+  de arcade).
 ---
 
 # Arcade Phaser Developer

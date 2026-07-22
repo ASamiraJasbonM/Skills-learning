@@ -55,6 +55,12 @@
       "skillPath": "safe-refactor-architect/SKILL.md",
       "computedHash": "fcc413ac6500527dc7128a4ab2075bb68d8a66a069cf39962683ef2c271130db"
     },
+    "arcade-phaser-developer": {
+      "source": "ASamiraJasbonM/Skills-learning",
+      "sourceType": "github",
+      "skillPath": "arcade-phaser-developer/SKILL.md",
+      "computedHash": "122bac37f4f5fa707df41d62f28cdfc15310969593c32d6dc81d85fcddc10c58"
+    },
     "phaser-background-manager": {
       "source": "local",
       "sourceType": "local",

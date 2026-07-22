@@ -54,6 +54,12 @@
       "sourceType": "github",
       "skillPath": "safe-refactor-architect/SKILL.md",
       "computedHash": "fcc413ac6500527dc7128a4ab2075bb68d8a66a069cf39962683ef2c271130db"
+    },
+    "phaser-background-manager": {
+      "source": "local",
+      "sourceType": "local",
+      "skillPath": "phaser-background-manager/SKILL.md",
+      "computedHash": "10ec90870ba5a98b5b9ee2163de56071b7713acca7d3224429492b80455f22bf"
     }
   }
 }

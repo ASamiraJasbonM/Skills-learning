@@ -59,6 +59,11 @@ Colección de skills instalables para agentes IA (OpenCode, Claude, etc.)
 - **Instalar:** `npx skills add ASamiraJasbonM/Skills-learning --skill skill-creator`
 - **Versión:** (Integrado en el sistema)
 
+### 12. Phaser Background Manager
+- **Descripción:** Genera y gestiona sistemas de fondo para videojuegos arcade con Phaser 3: parallax multicapa, scroll infinito, fondos procedurales sin assets externos, efectos retro y fondos dinámicos reactivos a nivel/puntaje.
+- **Instalar:** `npx skills add local/phaser-background-manager`
+- **Versión:** 1.1.0
+
 ---
 
 ## Cómo Instalar un Skill
@@ -67,7 +72,7 @@ Colección de skills instalables para agentes IA (OpenCode, Claude, etc.)
 
 ```bash
 # Instalar un skill específico
-npx skills add ASamiraJasbonM/Skills-learning --skill <nombre-skill>
+ <nombre-skill>
 
 # Instalar todos los skills
 npx skills add ASamiraJasbonM/Skills-learning --skill '*'
@@ -100,6 +105,7 @@ Skills-learning/
 ├── meta-skill-architect/      # SKILL.md architect
 ├── safe-refactor-architect/     # Safe code refactoring
 ├── skill-creator/              # Skill creation and evaluation
+├── phaser-background-manager/  # Phaser 3 background systems
 └── README.md
 ```
 
@@ -115,6 +121,7 @@ Skills-learning/
 | **Arquitectura** | architecture-diagram-architect |
 | **DevOps** | git-master-architect |
 | **Diseño de Skills** | meta-skill-architect, skill-creator |
+| **Arcade Game Dev** | phaser-background-manager |
 
 ---
 

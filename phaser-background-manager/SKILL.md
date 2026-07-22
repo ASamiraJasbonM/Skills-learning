@@ -5,6 +5,10 @@ platform: [Opencode, Claude]
 domain: arcade-game-dev
 parent-skill: arcade-phaser-developer
 dependencies: phaser@3.90+
+description: >
+  Genera y gestiona sistemas de fondo para videojuegos arcade con Phaser 3:
+  parallax multicapa, scroll infinito, fondos procedurales sin assets externos,
+  efectos retro y fondos dinámicos reactivos a nivel/puntaje.
 ---
 
 # Phaser Background Manager
